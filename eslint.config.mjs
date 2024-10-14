@@ -22,7 +22,8 @@ export default [{
     'eslint.config.mjs',
     'dist',
     'webpack.dev.config.js',
-    'webpack.prod.config.js'
+    'webpack.prod.config.js',
+    'scripts'
   ],
 }, ...compat.extends(
   'airbnb-base',

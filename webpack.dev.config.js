@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   mode: 'development',
@@ -8,6 +9,7 @@ module.exports = {
   output: {
     filename: 'build.js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: "/",
     clean: true,
   },
 
@@ -35,8 +37,12 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
+        test: /\.(png|jpg|jpeg)$/i,
+        type: "asset/resource"
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
@@ -47,11 +53,18 @@ module.exports = {
     }),
     new webpack.ProvidePlugin({
       process: 'process/browser'
-    })
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from:  './src/assets/', to: 'assets'},
+      ],
+    }),
   ],
 
   devServer: {
-    static: './dist',
+    static: {
+      directory: path.join(__dirname, 'assets'), // Folder with your images
+    },
     port: 3000,
     open: true,
     hot: true,

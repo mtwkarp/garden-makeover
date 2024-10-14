@@ -22,6 +22,7 @@ export default class Three3dEngine implements GraphicsEngineI {
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, this.width / this.height, 0.1, 1000);
     this.renderer = new THREE.WebGLRenderer();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
   private appendViewIntoContainer(): void {

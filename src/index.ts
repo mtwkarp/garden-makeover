@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import './style.css';
 import dotenv from 'dotenv';
 import { GameEntryI } from './game/gameEntry/types/interfaces';
 import IoCDependenciesContainer from './game/IoC/IoCDependenciesContainer';

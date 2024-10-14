@@ -1,0 +1,16 @@
+{
+  "assets": [
+    {
+      "alias": "splashScreen/background.jpg",
+      "src": "assets/2d/splashScreen/background.jpg"
+    },
+    {
+      "alias": "splashScreen/progress-bar-infill.png",
+      "src": "assets/2d/splashScreen/progress-bar-infill.png"
+    },
+    {
+      "alias": "splashScreen/progress-bar.png",
+      "src": "assets/2d/splashScreen/progress-bar.png"
+    }
+  ]
+}
