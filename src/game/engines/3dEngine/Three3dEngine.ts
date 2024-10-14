@@ -1,6 +1,8 @@
 import { injectable } from 'inversify';
 import * as THREE from 'three';
 import { GraphicsEngineI } from '../types/interfaces';
+import AssetsLoader3d from '../../lib/assetsLoaders/AssetsLoader3d';
+import ModelsCache from '../../lib/ModelsCache';
 
 @injectable()
 export default class Three3dEngine implements GraphicsEngineI {
@@ -13,8 +15,6 @@ export default class Three3dEngine implements GraphicsEngineI {
   private width: number;
 
   private height: number;
-
-  private cube: THREE.Mesh;
 
   constructor() {
     this.width = window.innerWidth;
@@ -37,21 +37,29 @@ export default class Three3dEngine implements GraphicsEngineI {
 
   public initialize(): void {
     this.appendViewIntoContainer();
-    // remove
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    this.cube = new THREE.Mesh(geometry, material);
-
-    this.scene.add(this.cube);
     this.camera.position.z = 5;
-    // remove
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+    this.scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(0, 0, 20);
+    this.scene.add(directionalLight);
+
+    const light = new THREE.PointLight(0xffffff, 2);
+    light.position.set(0, 0, 20);
+    this.scene.add(light);
+    new AssetsLoader3d().loadAllAssets().then(() => {
+      const model = ModelsCache.getModel('tree1.obj');
+      console.log(model);
+      model.scale.set(0.3, 0.3, 0.3);
+      model.translateY(-2);
+      this.scene.add(model);
+    });
+
+    this.scene.background = new THREE.Color(0x0000ff);
   }
 
   public update(): void {
-    // remove
-    this.cube.rotation.x += 0.01;
-    this.cube.rotation.y += 0.01;
-    //
     this.renderer.render(this.scene, this.camera);
   }
 }

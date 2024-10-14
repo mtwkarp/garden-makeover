@@ -51,6 +51,7 @@ export default [{
     quotes: ['error', 'single'],
     'no-console': 'off',
     'no-shadow': 'off',
+    'prefer-promise-reject-errors': 'off',
     'guard-for-in': 'off',
     'no-continue': 'off',
     'prefer-const': 'warn',
