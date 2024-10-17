@@ -1,19 +1,9 @@
 {
   "assets": [
     {
-      "alias": "Agapanthus_02.fbx",
-      "src": "assets/3d/house/Agapanthus_02.fbx",
-      "textures": null
-    },
-    {
-      "alias": "tree1.obj",
-      "src": "assets/3d/plants/tree1.obj",
-      "mtl": "assets/3d/plants/tree1.mtl"
-    },
-    {
-      "alias": "tree5.obj",
-      "src": "assets/3d/plants/tree5.obj",
-      "mtl": "assets/3d/plants/tree5.mtl"
+      "alias": "Tree.obj",
+      "src": "assets/3d/plants/Tree.obj",
+      "mtl": "assets/3d/plants/Tree.mtl"
     }
   ]
 }

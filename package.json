@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "private": false,
   "scripts": {
-    "dev": "webpack serve --config webpack.dev.config.js",
+    "dev": "NODE_ENV=development webpack serve --config webpack.dev.config.js",
     "dev:build": "",
-    "prod:build": "webpack --config webpack.prod.config.js",
+    "prod:build": "webpack --config webpack.prod.config.js NODE_ENV=production",
     "generateManifest:2d": "node scripts/generate2dAssetsManifest.js",
     "generateManifest:3d": "node scripts/generate3dAssetsManifest.js",
     "prepare": "husky install",
