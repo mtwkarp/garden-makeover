@@ -5,9 +5,19 @@ import { engineModule2d } from './modules/engines/engineModule2d';
 import { engineModule3d } from './modules/engines/engineModule3d';
 import { updateEngineModule } from './modules/engines/updateEngineModule';
 import { appModule } from './modules/appModule';
+import { scenes2dModule } from './modules/2d/scenes2dModule';
+import { assetLoadersModule } from './modules/assetLoaders/assetLoadersModule';
 
 export default class IoCDependenciesContainer extends Container implements IoCDependenciesContainerI {
-  private modules: ContainerModule[] = [gameEntryModule, engineModule2d, engineModule3d, updateEngineModule, appModule];
+  private modules: ContainerModule[] = [
+    gameEntryModule,
+    engineModule2d,
+    engineModule3d,
+    updateEngineModule,
+    appModule,
+    scenes2dModule,
+    assetLoadersModule,
+  ];
 
   public loadDependencies(): void {
     this.load(...this.modules);

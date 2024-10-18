@@ -1,13 +1,18 @@
 import * as PIXI from 'pixi.js';
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { GraphicsEngineI } from '../types/interfaces';
+import { TYPES } from '../../IoC/Types';
+import { MainScene2dI } from '../../core/scenes/2d/mainScene2d/types/interfaces';
 
 @injectable()
 export default class Pixi2dEngine implements GraphicsEngineI {
   private readonly app: PIXI.Application;
 
-  constructor() {
+  private readonly mainScene2d: MainScene2dI;
+
+  constructor(@inject(TYPES.MainScene2d) mainScene: MainScene2dI) {
     this.app = new PIXI.Application();
+    this.mainScene2d = mainScene;
   }
 
   private appendViewIntoContainer(): void {
@@ -24,6 +29,10 @@ export default class Pixi2dEngine implements GraphicsEngineI {
     PIXI.Ticker.shared.stop();
   }
 
+  private addMainSceneToStage(): void {
+    this.app.stage.addChild(this.mainScene2d);
+  }
+
   public initialize(): void {
     this.stopDefaultTicker();
     // TODO
@@ -32,8 +41,9 @@ export default class Pixi2dEngine implements GraphicsEngineI {
       height: window.innerHeight,
       backgroundAlpha: 0,
     });
-
     this.app.stage.position.set(window.innerWidth / 2, window.innerHeight / 2);
+    this.addMainSceneToStage();
+    this.appendViewIntoContainer();
   }
 
   public update(time: number, deltaTime: number): void {

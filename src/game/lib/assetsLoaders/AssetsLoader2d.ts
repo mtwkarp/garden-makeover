@@ -11,7 +11,7 @@ export default class AssetsLoader2d implements AssetsLoader2dI {
   }
 
   public async loadAllAssets(): Promise<void> {
-    return this.loadSpecificAssets(this.assets);
+    await this.loadSpecificAssets(this.assets);
   }
 
   public async loadSpecificAssets(assets: AssetData2d[]): Promise<void> {

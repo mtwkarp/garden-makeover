@@ -1,4 +1,6 @@
-import { ContainerI } from '../../../../lib/2d/container/interfaces';
 import { SceneNames2d } from './enums';
+import { Scene2dI } from '../../../../lib/2d/types/interfaces';
 
-export type Scenes2dByNames = Record<SceneNames2d, ContainerI>;
+export type Scenes2dByNames = Partial<Record<SceneNames2d, Scene2dI>>;
+
+export type Scenes2dGetter = (sceneName: SceneNames2d) => Scene2dI;

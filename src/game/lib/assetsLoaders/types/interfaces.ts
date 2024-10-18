@@ -11,3 +11,8 @@ export interface AssetsLoader2dI extends AssetsLoaderI {
 export interface AssetsLoader3dI extends AssetsLoaderI {
   loadSpecificAssets(data: AssetData3d[]): Promise<void>;
 }
+
+export interface AssetLoadersManagerI extends AssetsLoaderI {
+  loadSpecific2dAssets(data: AssetData2d[]): Promise<void>;
+  loadSpecific3dAssets(data: AssetData3d[]): Promise<void>;
+}
