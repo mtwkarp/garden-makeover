@@ -2,13 +2,15 @@ import * as THREE from 'three';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader';
+import { injectable } from 'inversify';
 import {
   AssetData3d, FBXWithMapAsset, Model3dCache, OBJWithMTLAsset,
 } from './types/types';
 import { AssetsLoader3dI } from './types/interfaces';
-import manifest3d from '../../../assets/manifestAssets3d.json';
-import ModelsCache from '../ModelsCache';
+import manifest3d from '../../assets/manifestAssets3d.json';
+import ModelsCache from './ModelsCache';
 
+@injectable()
 export default class AssetsLoader3d implements AssetsLoader3dI {
   private readonly fbxLoader: FBXLoader;
 

@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { GameI } from './types/interfaces';
 import { TYPES } from '../../IoC/Types';
-import { AssetLoadersManagerI } from '../../lib/assetsLoaders/types/interfaces';
+import { AssetLoadersManagerI } from '../../assetsLoaders/types/interfaces';
 import { MainScene2dI } from '../scenes/2d/mainScene2d/types/interfaces';
 import { SceneNames2d } from '../scenes/2d/types/enums';
 
@@ -19,7 +19,22 @@ export default class Game implements GameI {
     this.main2dScene = mainScene2d;
   }
 
-  public async preloadSplashScreen(): Promise<void> {}
+  public async preloadSplashScreen(): Promise<void> {
+    await this.assetsLoader.loadSpecific2dAssets([
+      {
+        alias: 'splashScreen/background.jpg',
+        src: 'assets/2d/splashScreen/background.jpg',
+      },
+      {
+        alias: 'splashScreen/progress-bar-infill.png',
+        src: 'assets/2d/splashScreen/progress-bar-infill.png',
+      },
+      {
+        alias: 'splashScreen/progress-bar.png',
+        src: 'assets/2d/splashScreen/progress-bar.png',
+      },
+    ]);
+  }
 
   public async preloadAllAssets(): Promise<void> {
     await this.assetsLoader.loadAllAssets();
@@ -43,6 +58,6 @@ export default class Game implements GameI {
   }
 
   public startGame(): void {
-    this.removeSplashScreen();
+    // this.removeSplashScreen();
   }
 }

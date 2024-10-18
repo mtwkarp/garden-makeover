@@ -30,20 +30,26 @@ export default class Pixi2dEngine implements GraphicsEngineI {
   }
 
   private addMainSceneToStage(): void {
-    this.app.stage.addChild(this.mainScene2d);
+    this.app.stage.addChild(this.mainScene2d.view);
   }
 
-  public initialize(): void {
-    this.stopDefaultTicker();
-    // TODO
-    this.app.init({
+  private async createApp(): Promise<void> {
+    await this.app.init({
       width: window.innerWidth,
       height: window.innerHeight,
       backgroundAlpha: 0,
     });
-    this.app.stage.position.set(window.innerWidth / 2, window.innerHeight / 2);
-    this.addMainSceneToStage();
     this.appendViewIntoContainer();
+
+    this.app.stage.position.set(window.innerWidth / 2, window.innerHeight / 2);
+  }
+
+  public async initialize(): Promise<void> {
+    this.stopDefaultTicker();
+
+    await this.createApp();
+
+    this.addMainSceneToStage();
   }
 
   public update(time: number, deltaTime: number): void {

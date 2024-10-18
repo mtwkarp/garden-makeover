@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { AssetLoadersManagerI, AssetsLoader2dI, AssetsLoader3dI } from './types/interfaces';
-import { TYPES } from '../../IoC/Types';
+import { TYPES } from '../IoC/Types';
 import { AssetData2d, AssetData3d } from './types/types';
 
 @injectable()

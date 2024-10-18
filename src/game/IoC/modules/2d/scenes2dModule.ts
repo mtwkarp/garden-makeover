@@ -9,7 +9,7 @@ import MainScene2d from '../../../core/scenes/2d/mainScene2d/MainScene2d';
 
 export const scenes2dModule = new ContainerModule((bind) => {
   bind<Scenes2dGetter>(TYPES.Scenes2dGetter).toFactory((context) => {
-    const scenesByNames = {
+    const scenesByNames: Partial<Record<SceneNames2d, new () => Scene2dI>> = {
       [SceneNames2d.splash]: SplashScene,
     };
 

@@ -2,8 +2,6 @@ import { injectable } from 'inversify';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GraphicsEngineI } from '../types/interfaces';
-import AssetsLoader3d from '../../lib/assetsLoaders/AssetsLoader3d';
-import ModelsCache from '../../lib/ModelsCache';
 
 @injectable()
 export default class Three3dEngine implements GraphicsEngineI {
@@ -61,20 +59,12 @@ export default class Three3dEngine implements GraphicsEngineI {
     }
   }
 
-  public initialize(): void {
+  public async initialize(): Promise<void> {
     this.setupLight();
     this.setupScene();
     this.setupCamera();
     this.setupOrbitControls();
     this.appendViewIntoContainer();
-
-    new AssetsLoader3d().loadAllAssets().then(() => {
-      const model = ModelsCache.getModel('Tree.obj');
-      model.scale.set(0.3, 0.3, 0.3);
-      model.translateY(-2);
-
-      this.scene.add(model);
-    });
   }
 
   public update(): void {

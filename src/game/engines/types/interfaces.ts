@@ -7,5 +7,5 @@ export interface UpdateEngineI {
 
 export interface GraphicsEngineI {
   update: TickerCB;
-  initialize(): void;
+  initialize(): Promise<void>;
 }
