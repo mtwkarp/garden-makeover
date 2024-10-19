@@ -35,8 +35,8 @@ export default class Pixi2dEngine implements GraphicsEngineI {
 
   private async createApp(): Promise<void> {
     await this.app.init({
-      width: 10,
-      height: 10,
+      width: window.innerWidth,
+      height: window.innerHeight,
       backgroundAlpha: 0,
     });
     this.appendViewIntoContainer();

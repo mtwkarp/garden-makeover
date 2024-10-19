@@ -11,18 +11,13 @@
       "textures": null
     },
     {
-      "alias": "home.obj",
-      "src": "assets/3d/house/home.obj",
-      "mtl": null
+      "alias": "House.fbx",
+      "src": "assets/3d/house/House.fbx",
+      "textures": null
     },
     {
-      "alias": "Tree.obj",
-      "src": "assets/3d/plants/Tree.obj",
-      "mtl": "assets/3d/plants/Tree.mtl"
-    },
-    {
-      "alias": "tree.fbx",
-      "src": "assets/3d/trees/tree.fbx",
+      "alias": "Tree.fbx",
+      "src": "assets/3d/trees/Tree.fbx",
       "textures": null
     }
   ]

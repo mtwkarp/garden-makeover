@@ -53,7 +53,7 @@ export default class Three3dEngine implements GraphicsEngine3dI {
 
   private setupOrbitControls(): void {
     if (process.env.NODE_ENV === 'development' && process.env.ENABLE_ORBIT_CONTROLS) {
-      this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
+      this.orbitControls = new OrbitControls(this.camera, document.getElementById('2d-view-container'));
     }
   }
 

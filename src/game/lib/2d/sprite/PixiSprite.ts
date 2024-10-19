@@ -10,7 +10,9 @@ export default class PixiSprite implements SpriteI {
     } else {
       this.container = new Sprite();
     }
+
     this.container.anchor.set(0.5);
+    this.container.interactive = true;
   }
 
   public show() {
