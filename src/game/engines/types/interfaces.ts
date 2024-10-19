@@ -9,3 +9,7 @@ export interface GraphicsEngineI {
   update: TickerCB;
   initialize(): Promise<void>;
 }
+
+export interface GraphicsEngine3dI extends GraphicsEngineI {
+  scene: any;
+}

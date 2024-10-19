@@ -49,6 +49,14 @@ export default class PixiSprite implements SpriteI {
     this.container.position.set(x, y);
   }
 
+  public setPositionY(y: number): void {
+    this.container.position.y = y;
+  }
+
+  public setPositionX(x: number): void {
+    this.container.position.x = x;
+  }
+
   public get width(): number {
     return this.container.width;
   }

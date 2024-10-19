@@ -5,7 +5,7 @@ import { GraphicsEngineI } from '../types/interfaces';
 
 @injectable()
 export default class Three3dEngine implements GraphicsEngineI {
-  private readonly scene: THREE.Scene;
+  private readonly scene3d: THREE.Scene;
 
   private readonly camera: THREE.PerspectiveCamera;
 
@@ -20,7 +20,7 @@ export default class Three3dEngine implements GraphicsEngineI {
   constructor() {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
-    this.scene = new THREE.Scene();
+    this.scene3d = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(75, this.width / this.height, 0.1, 1000);
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -38,11 +38,11 @@ export default class Three3dEngine implements GraphicsEngineI {
 
   private setupLight(): void {
     const ambientLight = new THREE.AmbientLight(0xffffff);
-    this.scene.add(ambientLight);
+    this.scene3d.add(ambientLight);
 
     const directionalLight = new THREE.DirectionalLight(0xffffff);
     directionalLight.position.set(0, 0, 20);
-    this.scene.add(directionalLight);
+    this.scene3d.add(directionalLight);
   }
 
   private setupCamera(): void {
@@ -50,7 +50,7 @@ export default class Three3dEngine implements GraphicsEngineI {
   }
 
   private setupScene(): void {
-    this.scene.background = new THREE.Color(0x0000ff);
+    this.scene3d.background = new THREE.Color(0x0000ff);
   }
 
   private setupOrbitControls(): void {
@@ -68,6 +68,10 @@ export default class Three3dEngine implements GraphicsEngineI {
   }
 
   public update(): void {
-    this.renderer.render(this.scene, this.camera);
+    this.renderer.render(this.scene3d, this.camera);
+  }
+
+  public get scene(): THREE.Scene {
+    return this.scene3d;
   }
 }
