@@ -1,10 +1,10 @@
 import { injectable } from 'inversify';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { GraphicsEngineI } from '../types/interfaces';
+import { GraphicsEngine3dI } from '../types/interfaces';
 
 @injectable()
-export default class Three3dEngine implements GraphicsEngineI {
+export default class Three3dEngine implements GraphicsEngine3dI {
   private readonly scene3d: THREE.Scene;
 
   private readonly camera: THREE.PerspectiveCamera;
@@ -49,9 +49,7 @@ export default class Three3dEngine implements GraphicsEngineI {
     this.camera.position.z = 5;
   }
 
-  private setupScene(): void {
-    this.scene3d.background = new THREE.Color(0x0000ff);
-  }
+  private setupScene(): void {}
 
   private setupOrbitControls(): void {
     if (process.env.NODE_ENV === 'development' && process.env.ENABLE_ORBIT_CONTROLS) {
@@ -73,5 +71,9 @@ export default class Three3dEngine implements GraphicsEngineI {
 
   public get scene(): THREE.Scene {
     return this.scene3d;
+  }
+
+  public getRenderer(): THREE.WebGLRenderer {
+    return this.renderer;
   }
 }

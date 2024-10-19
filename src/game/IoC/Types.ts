@@ -11,4 +11,6 @@ export const TYPES = {
   AssetLoader2d: Symbol.for('AssetLoader2d'),
   AssetLoadersManager: Symbol.for('AssetLoadersManager'),
   Game: Symbol.for('Game'),
+  Decorations3dCollection: Symbol.for('Decorations3dCollection'),
+  Decorations3dManager: Symbol.for('Decorations3dManager'),
 };

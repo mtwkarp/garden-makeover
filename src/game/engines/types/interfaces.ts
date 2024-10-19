@@ -12,4 +12,5 @@ export interface GraphicsEngineI {
 
 export interface GraphicsEngine3dI extends GraphicsEngineI {
   scene: any;
+  getRenderer(): any;
 }
