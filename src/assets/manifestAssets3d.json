@@ -1,9 +1,29 @@
 {
   "assets": [
     {
+      "alias": "BushWithBerrys.fbx",
+      "src": "assets/3d/bushes/BushWithBerrys.fbx",
+      "textures": null
+    },
+    {
+      "alias": "flower.fbx",
+      "src": "assets/3d/flowers/flower.fbx",
+      "textures": null
+    },
+    {
+      "alias": "home.obj",
+      "src": "assets/3d/house/home.obj",
+      "mtl": null
+    },
+    {
       "alias": "Tree.obj",
       "src": "assets/3d/plants/Tree.obj",
       "mtl": "assets/3d/plants/Tree.mtl"
+    },
+    {
+      "alias": "tree.fbx",
+      "src": "assets/3d/trees/tree.fbx",
+      "textures": null
     }
   ]
 }
