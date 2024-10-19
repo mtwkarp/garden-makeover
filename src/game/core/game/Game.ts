@@ -62,33 +62,6 @@ export default class Game implements GameI {
 
   public startGame(): void {
     this.removeSplashScreen();
-    //     const pixiCanvas = document.getElementById('2d-view-container');
-    //     const threeCanvas = document.getElementById('3d-view-container');
-    // if(!pixiCanvas || !threeCanvas) {
-    //   return
-    // }
-    // // List of pointer events to forward
-    //     const pointerEvents = ['pointerdown', 'pointermove', 'pointerup'];
-    //
-    //     pointerEvents.forEach(eventName => {
-    //       pixiCanvas.addEventListener(eventName, (event) => {
-    //         // Create a new event with the same type and properties
-    //         const newEvent = new Event(event.type, event);
-    //         threeCanvas.dispatchEvent(newEvent);
-    //       });
-    //     });
-    //
-    // // Handle Three.js events
-    //     threeCanvas.addEventListener('pointerdown', (event) => {
-    //       console.log('Pointer down in Three.js', event.clientX, event.clientY);
-    //     });
-    //
-    //     threeCanvas.addEventListener('pointermove', (event) => {
-    //       console.log('Pointer move in Three.js', event.clientX, event.clientY);
-    //     });
-    //
-    //     threeCanvas.addEventListener('pointerup', (event) => {
-    //       console.log('Pointer up in Three.js', event.clientX, event.clientY);
-    //     });
+    this.main2dScene.showScene(SceneNames2d.outro);
   }
 }

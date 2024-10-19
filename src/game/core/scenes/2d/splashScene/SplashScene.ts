@@ -40,7 +40,7 @@ export default class SplashScene extends PixiScene implements Scene2dI {
     loader.setScale(0.3, 0.3);
 
     const rotationAnimation = gsap.to(loader.view, {
-      rotation: 360 * (Math.PI / 180), // convert to radians
+      rotation: 360 * (Math.PI / 180),
       duration: 2,
       ease: 'none',
       repeat: -1,
@@ -52,7 +52,7 @@ export default class SplashScene extends PixiScene implements Scene2dI {
 
   public override destroy(): void {
     const fadeAnimation = gsap.to(this.view, {
-      alpha: 0, // convert to radians
+      alpha: 0,
       duration: 2,
       onComplete: () => {
         this.animations.push(fadeAnimation);

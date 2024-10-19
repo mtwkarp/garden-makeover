@@ -14,7 +14,7 @@ export default class HouseDecoration implements Decoration3dI {
   }
 
   public getDecoration(): any {
-    const house = ModelsCache.getModel('Tree.fbx');
+    const house = ModelsCache.getModel('House.fbx');
     house.scale.set(0.1, 0.1, 0.1);
     return house;
   }

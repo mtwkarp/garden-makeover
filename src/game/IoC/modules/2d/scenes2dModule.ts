@@ -6,11 +6,15 @@ import SplashScene from '../../../core/scenes/2d/splashScene/SplashScene';
 import { Scene2dI } from '../../../lib/2d/types/interfaces';
 import { MainScene2dI } from '../../../core/scenes/2d/mainScene2d/types/interfaces';
 import MainScene2d from '../../../core/scenes/2d/mainScene2d/MainScene2d';
+import OutroScene from '../../../core/scenes/2d/outroScene/OutroScene';
+import GameScene from '../../../core/scenes/2d/gameScene/GameScene';
 
 export const scenes2dModule = new ContainerModule((bind) => {
   bind<Scenes2dGetter>(TYPES.Scenes2dGetter).toFactory((context) => {
     const scenesByNames: Partial<Record<SceneNames2d, new () => Scene2dI>> = {
       [SceneNames2d.splash]: SplashScene,
+      [SceneNames2d.outro]: OutroScene,
+      [SceneNames2d.game]: GameScene,
     };
 
     return (sceneName: SceneNames2d): Scene2dI | never => {
