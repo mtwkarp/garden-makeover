@@ -5,8 +5,12 @@
       "src": "assets/2d/gameScreen/buttons/simple-button.png"
     },
     {
-      "alias": "gameScreen/icons/bush.jpg",
-      "src": "assets/2d/gameScreen/icons/bush.jpg"
+      "alias": "gameScreen/icons/bush.png",
+      "src": "assets/2d/gameScreen/icons/bush.png"
+    },
+    {
+      "alias": "gameScreen/icons/discard.png",
+      "src": "assets/2d/gameScreen/icons/discard.png"
     },
     {
       "alias": "gameScreen/icons/flower.png",

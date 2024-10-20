@@ -10,6 +10,7 @@ import { assetLoadersModule } from './modules/assetLoaders/assetLoadersModule';
 import { gameModule } from './modules/gameModule';
 import { scene3dModule } from './modules/3d/scene3dModule';
 import { decorations3dModule } from './modules/3d/decorations3dModule';
+import { decorationPick2dButtonsModule } from './modules/2d/decorationPick2dButtonsModule';
 
 export default class IoCDependenciesContainer extends Container implements IoCDependenciesContainerI {
   private modules: ContainerModule[] = [
@@ -23,6 +24,7 @@ export default class IoCDependenciesContainer extends Container implements IoCDe
     gameModule,
     scene3dModule,
     decorations3dModule,
+    decorationPick2dButtonsModule,
   ];
 
   public loadDependencies(): void {

@@ -33,4 +33,28 @@ export default class PixiContainer implements ContainerI {
   public get view(): any {
     return this.container;
   }
+
+  public setScale(x: number, y: number): void {
+    this.container.scale.set(x, y);
+  }
+
+  public setPosition(x: number, y: number): void {
+    this.container.position.set(x, y);
+  }
+
+  public setPositionY(y: number): void {
+    this.container.position.y = y;
+  }
+
+  public setPositionX(x: number): void {
+    this.container.position.x = x;
+  }
+
+  public get width(): number {
+    return this.container.width;
+  }
+
+  public get height(): number {
+    return this.container.height;
+  }
 }

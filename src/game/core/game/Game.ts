@@ -62,6 +62,6 @@ export default class Game implements GameI {
 
   public startGame(): void {
     this.removeSplashScreen();
-    this.main2dScene.showScene(SceneNames2d.outro);
+    this.main2dScene.showScene(SceneNames2d.game);
   }
 }

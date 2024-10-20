@@ -11,7 +11,7 @@ import GameScene from '../../../core/scenes/2d/gameScene/GameScene';
 
 export const scenes2dModule = new ContainerModule((bind) => {
   bind<Scenes2dGetter>(TYPES.Scenes2dGetter).toFactory((context) => {
-    const scenesByNames: Partial<Record<SceneNames2d, new () => Scene2dI>> = {
+    const scenesByNames: Partial<Record<SceneNames2d, new (...args: any) => Scene2dI>> = {
       [SceneNames2d.splash]: SplashScene,
       [SceneNames2d.outro]: OutroScene,
       [SceneNames2d.game]: GameScene,
