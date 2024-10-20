@@ -1,11 +1,11 @@
 import { ContainerModule } from 'inversify';
 import { TYPES } from '../../Types';
-import { DecorationButtonsCollection } from '../../../core/scenes/2d/gameScene/buttons/types/types';
-import { DecorationButtonNames } from '../../../core/scenes/2d/gameScene/buttons/types/enums';
-import BushDecorationButton from '../../../core/scenes/2d/gameScene/buttons/decorationButtons/BushDecorationButton';
-import TreeDecorationButton from '../../../core/scenes/2d/gameScene/buttons/decorationButtons/TreeDecorationButtons';
-import FlowerDecorationButton from '../../../core/scenes/2d/gameScene/buttons/decorationButtons/FlowerDecorationButton';
-import DiscardPickedDecorationButton from '../../../core/scenes/2d/gameScene/buttons/discardButton/DiscardPickedDecorationButton';
+import { DecorationButtonsCollection } from '../../../core/components/2d/buttons/types/types';
+import { DecorationButtonNames } from '../../../core/components/2d/buttons/types/enums';
+import BushDecorationButton from '../../../core/components/2d/buttons/decorationButtons/BushDecorationButton';
+import TreeDecorationButton from '../../../core/components/2d/buttons/decorationButtons/TreeDecorationButtons';
+import FlowerDecorationButton from '../../../core/components/2d/buttons/decorationButtons/FlowerDecorationButton';
+import DiscardPickedDecorationButton from '../../../core/components/2d/buttons/discardButton/DiscardPickedDecorationButton';
 
 export const decorationPick2dButtonsModule = new ContainerModule((bind) => {
   bind<DecorationButtonsCollection>(TYPES.DecorationsPick2dButtonsCollection).toDynamicValue(

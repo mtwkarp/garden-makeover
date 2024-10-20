@@ -9,6 +9,14 @@ export interface ContainerI {
   setPosition(x: number, y: number): void;
   setPositionY(y: number): void;
   setPositionX(x: number): void;
+  makeInteractive(): void;
+  makeNoninteractive(): void;
+  enableButtonMode(): void;
+  disableButtonMode(): void;
+  onPointerDown(cb: (...args: any) => any): void;
+  offPointerDown(cb: (...args: any) => any): void;
+  setTint(tint: number): void;
+  scale: { x: number; y: number };
   width: number;
   height: number;
 }

@@ -14,7 +14,7 @@ export default class OutroScene extends PixiScene implements Scene2dI {
     this.initialize();
   }
 
-  public override show() {
+  public override show(): void {
     super.show();
     this.animateSceneAppearance();
   }

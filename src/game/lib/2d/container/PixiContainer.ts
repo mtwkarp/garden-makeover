@@ -8,13 +8,38 @@ export default class PixiContainer implements ContainerI {
 
   constructor() {
     this.container = new Container();
+    this.container.interactive = true;
   }
 
-  public show() {
+  public get scale(): { x: number; y: number } {
+    return this.container.scale;
+  }
+
+  public setTint(tint: number): void {
+    this.container.tint = tint;
+  }
+
+  public enableButtonMode(): void {
+    this.container.cursor = 'pointer';
+  }
+
+  public disableButtonMode(): void {
+    this.container.cursor = '';
+  }
+
+  public makeNoninteractive(): void {
+    this.container.interactive = false;
+  }
+
+  public makeInteractive(): void {
+    this.container.interactive = true;
+  }
+
+  public show(): void {
     this.container.visible = true;
   }
 
-  public hide() {
+  public hide(): void {
     this.container.visible = false;
   }
 
@@ -56,5 +81,13 @@ export default class PixiContainer implements ContainerI {
 
   public get height(): number {
     return this.container.height;
+  }
+
+  public onPointerDown(cb: (...args: any) => any): void {
+    this.container.on('pointerdown', cb);
+  }
+
+  public offPointerDown(cb: (...args: any) => any): void {
+    this.container.off('pointerdown', cb);
   }
 }
