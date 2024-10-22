@@ -2,6 +2,11 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
+const webpack = require('webpack');
+const dotenv = require("dotenv");
+const env = dotenv.config().parsed;
+
 
 module.exports = {
     mode: 'production',
@@ -16,6 +21,18 @@ module.exports = {
 
     resolve: {
         extensions: ['.ts', '.tsx', '.js'],
+        fallback: {
+            "fs": false,
+            "tls": false,
+            "net": false,
+            "path": false,
+            "zlib": false,
+            "http": false,
+            "https": false,
+            "stream": false,
+            "crypto": false,
+            "os": false,
+        }
     },
 
     module: {
@@ -28,6 +45,10 @@ module.exports = {
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
                 type: 'asset/resource',
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader'],
             },
         ],
     },
@@ -47,6 +68,17 @@ module.exports = {
                 minifyCSS: true,
                 minifyURLs: true,
             },
+        }),
+        new webpack.ProvidePlugin({
+            process: 'process/browser'
+        }),
+        new webpack.DefinePlugin({
+            'process.env': JSON.stringify(env)
+        }),
+        new CopyPlugin({
+            patterns: [
+                { from:  './src/assets/', to: 'assets'},
+            ],
         }),
         new CleanWebpackPlugin(),
     ],
