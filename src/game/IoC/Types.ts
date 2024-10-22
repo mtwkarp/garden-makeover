@@ -15,4 +15,6 @@ export const TYPES = {
   Decorations3dManager: Symbol.for('Decorations3dManager'),
   DecorationsPick2dButtonsCollection: Symbol.for('DecorationsPick2dButtonsCollection'),
   GlobalEventsManager: Symbol.for('GlobalEvents'),
+  ChangeLightButton: Symbol.for('ChangeLightButton'),
+  SceneLight: Symbol.for('SceneLight'),
 };

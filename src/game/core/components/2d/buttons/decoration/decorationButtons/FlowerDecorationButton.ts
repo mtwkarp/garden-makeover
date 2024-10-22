@@ -1,13 +1,13 @@
 import { inject, injectable } from 'inversify';
 import { EventEmitter } from 'pixi.js';
 import AbstractDecorationButton from '../AbstractDecorationButton';
-import PixiSprite from '../../../../../lib/2d/sprite/PixiSprite';
+import PixiSprite from '../../../../../../lib/2d/sprite/PixiSprite';
 import { DecorationButtonNames } from '../types/enums';
-import { TYPES } from '../../../../../IoC/Types';
+import { TYPES } from '../../../../../../IoC/Types';
 
 @injectable()
-export default class TreeDecorationButton extends AbstractDecorationButton {
-  public readonly decorationName: DecorationButtonNames = DecorationButtonNames.tree;
+export default class FlowerDecorationButton extends AbstractDecorationButton {
+  public readonly decorationName: DecorationButtonNames = DecorationButtonNames.flower;
 
   constructor(@inject(TYPES.GlobalEventsManager) globalEventsManager: EventEmitter) {
     super(globalEventsManager);
@@ -28,9 +28,8 @@ export default class TreeDecorationButton extends AbstractDecorationButton {
   }
 
   protected createIcon(): void {
-    const icon = new PixiSprite('gameScreen/icons/tree.png');
-    icon.setScale(0.6, 0.6);
-    icon.view.tint = this.buttonBackgroundTint;
+    const icon = new PixiSprite('gameScreen/icons/flower.png');
+    icon.setScale(0.45, 0.45);
     icon.view.cursor = 'pointer';
 
     this.spritesContainer.addChild(icon.view);

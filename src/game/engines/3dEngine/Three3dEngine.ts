@@ -2,6 +2,9 @@ import { injectable } from 'inversify';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GraphicsEngine3dI } from '../types/interfaces';
+import DraggableCube from '../../core/components/3d/draggable/DraggableCube';
+import TargetArea from '../../core/components/3d/targetArea/TargetArea';
+import MyDragControls from '../../core/components/3d/dragControls/MyDragControls';
 
 @injectable()
 export default class Three3dEngine implements GraphicsEngine3dI {
@@ -16,6 +19,12 @@ export default class Three3dEngine implements GraphicsEngine3dI {
   private width: number;
 
   private height: number;
+
+  private cube: DraggableCube;
+
+  private targetArea: TargetArea;
+
+  private dragControls: MyDragControls;
 
   constructor() {
     this.width = window.innerWidth;
@@ -36,17 +45,11 @@ export default class Three3dEngine implements GraphicsEngine3dI {
     container.appendChild(this.renderer.domElement);
   }
 
-  private setupLight(): void {
-    const ambientLight = new THREE.AmbientLight(0xffffff);
-    this.scene3d.add(ambientLight);
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff);
-    directionalLight.position.set(0, 0, 20);
-    this.scene3d.add(directionalLight);
-  }
-
   private setupCamera(): void {
-    this.camera.position.z = 5;
+    this.camera.position.z = 2;
+    this.camera.position.y = 1;
+    this.camera.position.x = -3;
+    this.camera.rotation.y = -Math.PI / 5;
   }
 
   private setupScene(): void {}
@@ -58,11 +61,12 @@ export default class Three3dEngine implements GraphicsEngine3dI {
   }
 
   public async initialize(): Promise<void> {
-    this.setupLight();
     this.setupScene();
     this.setupCamera();
     this.setupOrbitControls();
     this.appendViewIntoContainer();
+    this.addObjects();
+    this.initDragControls();
   }
 
   public update(): void {
@@ -75,5 +79,22 @@ export default class Three3dEngine implements GraphicsEngine3dI {
 
   public getRenderer(): THREE.WebGLRenderer {
     return this.renderer;
+  }
+
+  private addObjects(): void {
+    this.cube = new DraggableCube(1, 0x00ff00);
+    this.scene.add(this.cube);
+
+    this.targetArea = new TargetArea(1, 0xffff00);
+    this.scene.add(this.targetArea);
+  }
+
+  private initDragControls(): void {
+    this.dragControls = new MyDragControls(
+      [this.cube],
+      this.camera,
+      document.getElementById('2d-view-container') as HTMLElement,
+      this.targetArea,
+    );
   }
 }

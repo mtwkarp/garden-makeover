@@ -1,24 +1,19 @@
 import { inject, injectable } from 'inversify';
 import gsap from 'gsap';
 import { EventEmitter } from 'pixi.js';
-import { DecorationPickButtonI } from './types/interfaces';
-import PixiContainer from '../../../../lib/2d/container/PixiContainer';
-import { ContainerI } from '../../../../lib/2d/types/interfaces';
-import { TYPES } from '../../../../IoC/Types';
-import { DecorationButtonNames } from './types/enums';
-import { GameGlobalEvents } from '../../../events/types/enums';
+import PixiContainer from '../../../../../lib/2d/container/PixiContainer';
+import { ContainerI } from '../../../../../lib/2d/types/interfaces';
+import { TYPES } from '../../../../../IoC/Types';
+import { GameGlobalEvents } from '../../../../events/types/enums';
+import PixiSprite from '../../../../../lib/2d/sprite/PixiSprite';
 
 @injectable()
-export default abstract class AbstractDecorationButton extends PixiContainer implements DecorationPickButtonI {
-  protected buttonBackgroundTint: number = 0xecffdc;
-
+export default class LightChangeButton extends PixiContainer {
   protected spritesContainer: ContainerI;
 
   protected clickAnimationFinished: boolean = true;
 
   protected readonly globalEventsManager: EventEmitter;
-
-  public abstract readonly decorationName: DecorationButtonNames;
 
   constructor(@inject(TYPES.GlobalEventsManager) globalEventsManager: EventEmitter) {
     super();
@@ -27,6 +22,8 @@ export default abstract class AbstractDecorationButton extends PixiContainer imp
     this.enableButtonMode();
     this.spritesContainer = new PixiContainer();
     this.addChild(this.spritesContainer.view);
+
+    this.initialize();
   }
 
   protected subscribe(): void {
@@ -38,9 +35,26 @@ export default abstract class AbstractDecorationButton extends PixiContainer imp
     this.triggerClickEvent();
   }
 
-  protected abstract createButtonBackground(): void;
-  protected abstract createIcon(): void;
-  protected abstract initialize(): void;
+  protected createButtonBackground(): void {
+    const background = new PixiSprite('gameScreen/buttons/simple-button.png');
+    background.view.cursor = 'pointer';
+
+    this.spritesContainer.addChild(background.view);
+  }
+
+  protected createIcon(): void {
+    const icon = new PixiSprite('gameScreen/icons/light_bulb.png');
+    icon.setScale(0.7, 0.7);
+    icon.view.cursor = 'pointer';
+
+    this.spritesContainer.addChild(icon.view);
+  }
+
+  protected initialize(): void {
+    this.createButtonBackground();
+    this.createIcon();
+    this.subscribe();
+  }
 
   protected createChildren(): void {
     this.createButtonBackground();
@@ -48,13 +62,14 @@ export default abstract class AbstractDecorationButton extends PixiContainer imp
   }
 
   protected triggerClickEvent(): void {
-    this.globalEventsManager.emit(GameGlobalEvents.decorationButtonClick, this.decorationName);
+    this.globalEventsManager.emit(GameGlobalEvents.changeLightningButtonClick);
   }
 
   protected animateClick(): void {
     if (!this.clickAnimationFinished) {
       return;
     }
+
     this.clickAnimationFinished = false;
     gsap.to(this.spritesContainer.view.scale, {
       duration: 0.15,
@@ -67,17 +82,5 @@ export default abstract class AbstractDecorationButton extends PixiContainer imp
         this.clickAnimationFinished = true;
       },
     });
-  }
-
-  public disable(): void {
-    this.makeNoninteractive();
-    this.disableButtonMode();
-    this.view.tint = 0xa9a9a9;
-  }
-
-  public enable(): void {
-    this.makeInteractive();
-    this.enableButtonMode();
-    this.view.tint = 16777215;
   }
 }

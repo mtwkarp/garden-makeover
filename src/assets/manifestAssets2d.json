@@ -17,6 +17,10 @@
       "src": "assets/2d/gameScreen/icons/flower.png"
     },
     {
+      "alias": "gameScreen/icons/light_bulb.png",
+      "src": "assets/2d/gameScreen/icons/light_bulb.png"
+    },
+    {
       "alias": "gameScreen/icons/tree.png",
       "src": "assets/2d/gameScreen/icons/tree.png"
     },

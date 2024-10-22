@@ -3,9 +3,9 @@ import { EventEmitter } from 'pixi.js';
 import gsap from 'gsap';
 import { DecorationPickButtonI } from '../types/interfaces';
 import AbstractDecorationButton from '../AbstractDecorationButton';
-import PixiSprite from '../../../../../lib/2d/sprite/PixiSprite';
+import PixiSprite from '../../../../../../lib/2d/sprite/PixiSprite';
 import { DecorationButtonNames } from '../types/enums';
-import { TYPES } from '../../../../../IoC/Types';
+import { TYPES } from '../../../../../../IoC/Types';
 
 @injectable()
 export default class DiscardPickedDecorationButton extends AbstractDecorationButton implements DecorationPickButtonI {

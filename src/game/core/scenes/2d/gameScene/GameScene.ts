@@ -4,10 +4,10 @@ import { ContainerI, Scene2dI } from '../../../../lib/2d/types/interfaces';
 import { SceneNames2d } from '../types/enums';
 import PixiScene from '../../../../lib/2d/scene/PixiScene';
 import { TYPES } from '../../../../IoC/Types';
-import { DecorationButtonsCollection } from '../../../components/2d/buttons/types/types';
+import { DecorationButtonsCollection } from '../../../components/2d/buttons/decoration/types/types';
 import PixiContainer from '../../../../lib/2d/container/PixiContainer';
-import { DecorationButtonNames } from '../../../components/2d/buttons/types/enums';
-import { DecorationPickButtonI } from '../../../components/2d/buttons/types/interfaces';
+import { DecorationButtonNames } from '../../../components/2d/buttons/decoration/types/enums';
+import { DecorationPickButtonI } from '../../../components/2d/buttons/decoration/types/interfaces';
 import { GameGlobalEvents } from '../../../events/types/enums';
 
 @injectable()
@@ -20,14 +20,18 @@ export default class GameScene extends PixiScene implements Scene2dI {
 
   private readonly globalEventsManager: EventEmitter;
 
+  private readonly changeLightButton: ContainerI;
+
   constructor(
   @inject(TYPES.DecorationsPick2dButtonsCollection) decorationPickButtons: DecorationButtonsCollection,
     @inject(TYPES.GlobalEventsManager) globalEventsManager: EventEmitter,
+    @inject(TYPES.ChangeLightButton) changeLightButton: ContainerI,
   ) {
     super();
     this.globalEventsManager = globalEventsManager;
     this.buttons = decorationPickButtons;
     this.buttonsArr = Object.keys(this.buttons).map((key) => this.buttons[key as DecorationButtonNames]);
+    this.changeLightButton = changeLightButton;
     this.initialize();
   }
 
@@ -48,7 +52,10 @@ export default class GameScene extends PixiScene implements Scene2dI {
       this.buttons[DecorationButtonNames.tree].view,
     );
 
-    this.addChild(this.buttonsContainer.view);
+    this.changeLightButton.setScale(0.35, 0.35);
+    this.changeLightButton.setPosition(-window.innerWidth / 2 + 80, -window.innerHeight / 2 + 80);
+
+    this.addChild(this.buttonsContainer.view, this.changeLightButton.view);
   }
 
   private setPositionsForButtons(): void {
