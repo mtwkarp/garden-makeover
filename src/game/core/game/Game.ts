@@ -4,7 +4,7 @@ import { TYPES } from '../../IoC/Types';
 import { AssetLoadersManagerI } from '../../assetsLoaders/types/interfaces';
 import { MainScene2dI } from '../scenes/2d/mainScene2d/types/interfaces';
 import { SceneNames2d } from '../scenes/2d/types/enums';
-import { Decorations3dManagerI } from '../scenes/3d/decorations/types/interfaces';
+import { Decorations3dManagerI } from '../components/3d/decorations/types/interfaces';
 
 @injectable()
 export default class Game implements GameI {

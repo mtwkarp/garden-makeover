@@ -2,10 +2,10 @@ import { inject, injectable } from 'inversify';
 import { Sky } from 'three/examples/jsm/objects/Sky';
 import * as THREE from 'three';
 import { EventEmitter } from 'pixi.js';
-import { TYPES } from '../../../../../IoC/Types';
-import { Decoration3dI } from '../types/interfaces';
-import { GraphicsEngine3dI } from '../../../../../engines/types/interfaces';
-import { GameGlobalEvents } from '../../../../events/types/enums';
+import { TYPES } from '../../../../../../IoC/Types';
+import { Decoration3dI } from '../../types/interfaces';
+import { GraphicsEngine3dI } from '../../../../../../engines/types/interfaces';
+import { GameGlobalEvents } from '../../../../../events/types/enums';
 
 @injectable()
 export default class SkyBackground implements Decoration3dI {

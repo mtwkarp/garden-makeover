@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export default class DraggableCube extends THREE.Mesh {
+export default class DraggableObject extends THREE.Mesh {
   public draggable: boolean;
 
   constructor(size: number, color: number) {
