@@ -17,4 +17,8 @@ export default class MainScene3d implements MainScene3dI {
   public addToScene(obj: any): void {
     this.scene.add(obj);
   }
+
+  public removeFromScene(obj: any): void {
+    this.scene.remove(obj);
+  }
 }

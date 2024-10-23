@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import TargetArea from '../targetArea/TargetArea';
+import DecorationTargetArea from '../targetArea/targetAreas/DecorationTargetArea';
 
 export default class MyDragControls {
   private objects: THREE.Object3D[];
@@ -8,7 +8,7 @@ export default class MyDragControls {
 
   private domElement: HTMLElement;
 
-  private targetArea: TargetArea;
+  private targetArea: DecorationTargetArea;
 
   private enabled: boolean = true;
 
@@ -24,7 +24,7 @@ export default class MyDragControls {
 
   private mouse: THREE.Vector2;
 
-  constructor(objects: THREE.Object3D[], camera: THREE.Camera, domElement: HTMLElement, targetArea: TargetArea) {
+  constructor(objects: THREE.Object3D[], camera: THREE.Camera, domElement: HTMLElement, targetArea: DecorationTargetArea) {
     this.objects = objects;
     this.camera = camera;
     this.domElement = domElement;

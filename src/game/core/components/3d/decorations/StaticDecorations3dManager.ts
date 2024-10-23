@@ -1,11 +1,11 @@
 import { inject, injectable } from 'inversify';
-import { Decorations3dManagerI } from './types/interfaces';
+import { StaticDecorations3dManagerI } from './types/interfaces';
 import { TYPES } from '../../../../IoC/Types';
 import { StaticDecorations3dCollection } from './types/types';
 import { MainScene3dI } from '../../../scenes/3d/mainScene3d/types/interfaces';
 
 @injectable()
-export default class StaticDecorations3dManager implements Decorations3dManagerI {
+export default class StaticDecorations3dManager implements StaticDecorations3dManagerI {
   private readonly decorations: StaticDecorations3dCollection;
 
   private readonly scene: MainScene3dI;

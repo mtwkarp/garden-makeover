@@ -1,1 +1,3 @@
-export interface SceneDecorationControllerI {}
+export interface SceneDecorationControllerI {
+  enableSceneDecoration(): void;
+}

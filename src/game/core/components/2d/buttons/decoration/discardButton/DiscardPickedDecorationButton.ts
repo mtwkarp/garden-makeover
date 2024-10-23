@@ -6,6 +6,7 @@ import AbstractDecorationButton from '../AbstractDecorationButton';
 import PixiSprite from '../../../../../../lib/2d/sprite/PixiSprite';
 import { DecorationButtonNames } from '../types/enums';
 import { TYPES } from '../../../../../../IoC/Types';
+import { GameGlobalEvents } from '../../../../../events/types/enums';
 
 @injectable()
 export default class DiscardPickedDecorationButton extends AbstractDecorationButton implements DecorationPickButtonI {
@@ -57,5 +58,9 @@ export default class DiscardPickedDecorationButton extends AbstractDecorationBut
     icon.setScale(0.5, 0.5);
 
     this.spritesContainer.addChild(icon.view);
+  }
+
+  protected override triggerClickEvent(): void {
+    this.globalEventsManager.emit(GameGlobalEvents.cancelDecorationButtonClick);
   }
 }

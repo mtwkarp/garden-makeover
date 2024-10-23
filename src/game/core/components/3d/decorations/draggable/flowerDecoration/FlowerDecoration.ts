@@ -5,7 +5,7 @@ import { DraggableDecorationNames } from '../../types/enums';
 
 @injectable()
 export default class FlowerDecoration extends AbstractDraggableDecoration {
-  public name = DraggableDecorationNames.tree;
+  public name = DraggableDecorationNames.flower;
 
   public getDecoration(): any {
     const flower = ModelsCache.getModel('flower.fbx');

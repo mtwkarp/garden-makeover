@@ -70,25 +70,18 @@ export default class GameScene extends PixiScene implements Scene2dI {
   }
 
   private subscribe(): void {
-    this.globalEventsManager.on(GameGlobalEvents.decorationButtonClick, this.onButtonClick, this);
-  }
-
-  private onButtonClick(buttonName: DecorationButtonNames): void {
-    if (buttonName === DecorationButtonNames.discard) {
-      this.onDiscardButtonClick();
-    } else {
-      this.onDecorationPickButtonClick();
-    }
-  }
-
-  private onDiscardButtonClick(): void {
-    this.buttons[DecorationButtonNames.discard].hide();
-    this.enableDecorationButtons();
+    this.globalEventsManager.on(GameGlobalEvents.decorationButtonClick, this.onDecorationPickButtonClick, this);
+    this.globalEventsManager.on(GameGlobalEvents.cancelDecorationButtonClick, this.onDiscardButtonClick, this);
   }
 
   private onDecorationPickButtonClick(): void {
     this.buttons[DecorationButtonNames.discard].show();
     this.disableDecorationButtons();
+  }
+
+  private onDiscardButtonClick(): void {
+    this.buttons[DecorationButtonNames.discard].hide();
+    this.enableDecorationButtons();
   }
 
   private disableDecorationButtons(): void {
