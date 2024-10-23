@@ -1,34 +1,40 @@
 import * as THREE from 'three';
-import DecorationTargetArea from '../targetArea/targetAreas/DecorationTargetArea';
+import { inject, injectable } from 'inversify';
+import { DecorationTargetAreaI } from '../targetArea/types/interfaces';
+import { DraggableDecoration3dI } from '../decorations/types/interfaces';
+import { TYPES } from '../../../../IoC/Types';
+import Three3dEngine from '../../../../engines/3dEngine/Three3dEngine';
+import { DragControllerI } from './types/interfaces';
 
-export default class MyDragControls {
+@injectable()
+export default class DragController implements DragControllerI {
   private objects: THREE.Object3D[];
 
-  private camera: THREE.Camera;
+  private readonly camera: THREE.Camera;
 
   private domElement: HTMLElement;
 
-  private targetArea: DecorationTargetArea;
+  private targetAreas: DecorationTargetAreaI[];
 
   private enabled: boolean = true;
 
   private selected: THREE.Object3D | null = null;
 
-  private plane: THREE.Plane;
+  private readonly plane: THREE.Plane;
 
-  private offset: THREE.Vector3;
+  private readonly offset: THREE.Vector3;
 
-  private intersection: THREE.Vector3;
+  private readonly intersection: THREE.Vector3;
 
-  private raycaster: THREE.Raycaster;
+  private readonly raycaster: THREE.Raycaster;
 
-  private mouse: THREE.Vector2;
+  private readonly mouse: THREE.Vector2;
 
-  constructor(objects: THREE.Object3D[], camera: THREE.Camera, domElement: HTMLElement, targetArea: DecorationTargetArea) {
-    this.objects = objects;
-    this.camera = camera;
-    this.domElement = domElement;
-    this.targetArea = targetArea;
+  constructor(@inject(TYPES.Engine3d) engine3d: Three3dEngine) {
+    this.objects = [];
+    this.camera = engine3d.getCamera();
+    this.domElement = document.getElementById('2d-view-container') as HTMLElement;
+    this.targetAreas = [];
 
     this.plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
     this.offset = new THREE.Vector3();
@@ -36,9 +42,25 @@ export default class MyDragControls {
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
 
+    this.subscribeForDomEvents();
+  }
+
+  private subscribeForDomEvents(): void {
     this.domElement.addEventListener('mousedown', this.onDocumentMouseDown.bind(this), false);
     this.domElement.addEventListener('mousemove', this.onDocumentMouseMove.bind(this), false);
     this.domElement.addEventListener('mouseup', this.onDocumentMouseUp.bind(this), false);
+  }
+
+  public setDraggable(draggable: DraggableDecoration3dI): void {
+    this.objects = [draggable.getDecoration()];
+  }
+
+  public unsetDraggable(): void {
+    this.objects = [];
+  }
+
+  public setTargetAreas(targetAreas: DecorationTargetAreaI[]): void {
+    this.targetAreas = [...targetAreas];
   }
 
   private onDocumentMouseDown(event: MouseEvent): void {
@@ -89,18 +111,21 @@ export default class MyDragControls {
   private onDocumentMouseUp(event: MouseEvent): void {
     event.preventDefault();
 
-    if (this.selected) {
-      const dx = this.selected.position.x - this.targetArea.position.x;
-      const dz = this.selected.position.z - this.targetArea.position.z;
-      const distance = Math.sqrt(dx * dx + dz * dz);
+    for (let i = 0; i < this.targetAreas.length; i++) {
+      const targetArea = this.targetAreas[i].getDecorationTargetArea();
+      if (this.selected) {
+        const dx = this.selected.position.x - targetArea.position.x;
+        const dz = this.selected.position.z - targetArea.position.z;
+        const distance = Math.sqrt(dx * dx + dz * dz);
 
-      const { outerRadius } = (this.targetArea.geometry as THREE.RingGeometry).parameters;
+        const { outerRadius } = (targetArea.geometry as THREE.RingGeometry).parameters;
 
-      if (distance <= outerRadius) {
-        this.selected.position.set(this.targetArea.position.x, this.selected.position.y, this.targetArea.position.z);
+        if (distance <= outerRadius) {
+          this.selected.position.set(targetArea.position.x, this.selected.position.y, targetArea.position.z);
+        }
+
+        this.selected = null;
       }
-
-      this.selected = null;
     }
   }
 

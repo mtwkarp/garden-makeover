@@ -31,15 +31,15 @@ export default class Three3dEngine implements GraphicsEngine3dI {
   }
 
   private setupCamera(): void {
-    this.camera.position.z = 2;
-    this.camera.position.y = 1;
+    this.camera.position.z = 3;
+    this.camera.position.y = 1.2;
     this.camera.position.x = -3;
-    this.camera.rotation.y = -Math.PI / 5;
+    this.camera.lookAt(new THREE.Vector3(-1.2, 0.7, 0));
   }
 
   private setupOrbitControls(): void {
     if (process.env.NODE_ENV === 'development' && process.env.ENABLE_ORBIT_CONTROLS) {
-      this.orbitControls = new OrbitControls(this.camera, document.getElementById('2d-view-container'));
+      // this.orbitControls = new OrbitControls(this.camera, document.getElementById('2d-view-container'));
     }
   }
 
@@ -59,5 +59,9 @@ export default class Three3dEngine implements GraphicsEngine3dI {
 
   public getRenderer(): THREE.WebGLRenderer {
     return this.renderer;
+  }
+
+  public getCamera(): any {
+    return this.camera;
   }
 }

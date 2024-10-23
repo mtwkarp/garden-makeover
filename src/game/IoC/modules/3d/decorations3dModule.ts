@@ -17,6 +17,7 @@ import BushDecoration from '../../../core/components/3d/decorations/draggable/bu
 import DraggableDecorations3dManager from '../../../core/components/3d/decorations/DraggableDecorations3dManager';
 import SceneDecorationController from '../../../core/components/3d/sceneDecorator/SceneDecorationController';
 import { SceneDecorationControllerI } from '../../../core/components/3d/sceneDecorator/types/interfaces';
+import FlowerDecoration from '../../../core/components/3d/decorations/draggable/flowerDecoration/FlowerDecoration';
 
 export const decorations3dModule = new ContainerModule((bind) => {
   bind<StaticDecorations3dCollection>(TYPES.StaticDecorations3dCollection).toDynamicValue(
@@ -30,7 +31,7 @@ export const decorations3dModule = new ContainerModule((bind) => {
   bind<DraggableDecorations3dCollection>(TYPES.DraggableDecorations3dCollection).toDynamicValue(
     (context): DraggableDecorations3dCollection => ({
       [DraggableDecorationNames.tree]: context.container.resolve(TreeDecoration),
-      [DraggableDecorationNames.flower]: context.container.resolve(BushDecoration),
+      [DraggableDecorationNames.flower]: context.container.resolve(FlowerDecoration),
       [DraggableDecorationNames.bush]: context.container.resolve(BushDecoration),
     }),
   );

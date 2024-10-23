@@ -22,4 +22,5 @@ export const TYPES = {
   DecorationTargetAreasController: Symbol.for('DecorationTargetAreasController'),
   DecorationTargetAreaCollection: Symbol.for('DecorationTargetAreaCollection'),
   SceneDecorationController: Symbol.for('SceneDecorationManager'),
+  DragController: Symbol.for('DragController'),
 };

@@ -13,6 +13,7 @@ import { decorations3dModule } from './modules/3d/decorations3dModule';
 import { buttons2dModule } from './modules/2d/buttons2dModule';
 import { eventsModule } from './modules/events/eventsModule';
 import { targetAreasModule } from './modules/3d/targetAreasModule';
+import { dragControlsModule } from './modules/3d/dragControlsModule';
 
 export default class IoCDependenciesContainer extends Container implements IoCDependenciesContainerI {
   private modules: ContainerModule[] = [
@@ -29,6 +30,7 @@ export default class IoCDependenciesContainer extends Container implements IoCDe
     buttons2dModule,
     eventsModule,
     targetAreasModule,
+    dragControlsModule,
   ];
 
   public loadDependencies(): void {

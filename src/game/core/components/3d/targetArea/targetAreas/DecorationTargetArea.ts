@@ -12,19 +12,18 @@ export default class DecorationTargetArea implements DecorationTargetAreaI {
 
   private createTargetArea(): void {
     const color = new THREE.Color(0xff0000);
-    const radius = 2;
+    const radius = 0.3;
     const geometry = new THREE.RingGeometry(radius - 0.1, radius, 32);
     const material = new THREE.MeshStandardMaterial({
       color,
       side: THREE.DoubleSide,
       emissive: new THREE.Color(color),
-      emissiveIntensity: 0.5,
+      emissiveIntensity: 1,
     });
 
     const mesh = new THREE.Mesh(geometry, material);
 
     mesh.rotation.x = -Math.PI / 2;
-    mesh.position.y = 0.01;
 
     this.targetArea = mesh;
   }

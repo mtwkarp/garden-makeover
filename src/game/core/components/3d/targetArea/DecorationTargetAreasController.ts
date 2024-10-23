@@ -8,9 +8,9 @@ export default class DecorationTargetAreasController implements DecorationTarget
   private readonly targetAreas: DecorationTargetAreasCollection;
 
   private readonly targetAreasPositions: { x: number; y: number; z: number }[] = [
-    { x: 0, y: 0, z: 0 },
-    { x: 0, y: 0, z: 0 },
-    { x: 0, y: 0, z: 0 },
+    { x: 1, y: 0.05, z: -0.2 },
+    { x: -1, y: 0.06, z: -0.3 },
+    { x: -2, y: 0.04, z: -0.4 },
   ];
 
   constructor(@inject(TYPES.DecorationTargetAreaCollection) targetAreas: DecorationTargetAreasCollection) {
@@ -31,4 +31,10 @@ export default class DecorationTargetAreasController implements DecorationTarget
 
     return this.targetAreas;
   }
+
+  public hideAllTargetAreas(): void {
+    // this.targetAreasPositions.forEach((targetArea) => {targetArea.})
+  }
+
+  public showAllTargetAreas(): void {}
 }
