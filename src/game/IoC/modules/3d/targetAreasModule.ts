@@ -1,8 +1,6 @@
 import { ContainerModule } from 'inversify';
 import { TYPES } from '../../Types';
-import {
-  DecorationTargetAreasControllerI,
-} from '../../../core/components/3d/targetArea/types/interfaces';
+import { DecorationTargetAreasControllerI } from '../../../core/components/3d/targetArea/types/interfaces';
 import DecorationTargetAreasController from '../../../core/components/3d/targetArea/DecorationTargetAreasController';
 import { DecorationTargetAreasCollection } from '../../../core/components/3d/targetArea/types/types';
 import DecorationTargetArea from '../../../core/components/3d/targetArea/targetAreas/DecorationTargetArea';

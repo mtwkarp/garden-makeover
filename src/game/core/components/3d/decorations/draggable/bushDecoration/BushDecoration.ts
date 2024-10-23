@@ -19,11 +19,11 @@ export default class BushDecoration extends AbstractDraggableDecoration {
   }
 
   protected override createDecorationHitArea() {
-    const size = 1;
-    const geometry = new BoxGeometry(size, size, size);
+    const height = 0.5;
+    const geometry = new BoxGeometry(0.8, height, 0.8);
     const material = new MeshStandardMaterial({ color: new Color(1, 1, 1) });
 
     this.decorationHitArea = new Mesh(geometry, material);
-    this.decorationHitArea.position.set(0, size / 2, 0);
+    this.decorationHitArea.position.set(0, height / 2, 0);
   }
 }

@@ -10,6 +10,8 @@ import { DraggableDecorationNames } from '../../types/enums';
 export default class FlowerDecoration extends AbstractDraggableDecoration {
   public name = DraggableDecorationNames.flower;
 
+  public readonly hitAreaHeight = 0.2;
+
   public createDecoration(): void {
     const flower = ModelsCache.getModel('flower.fbx');
 
@@ -19,11 +21,11 @@ export default class FlowerDecoration extends AbstractDraggableDecoration {
   }
 
   protected override createDecorationHitArea() {
-    const size = 1;
-    const geometry = new BoxGeometry(size, size, size);
+    const height = 0.7;
+    const geometry = new BoxGeometry(0.2, height, 0.2);
     const material = new MeshStandardMaterial({ color: new Color(1, 1, 1) });
 
     this.decorationHitArea = new Mesh(geometry, material);
-    this.decorationHitArea.position.set(0, size / 2, 0);
+    this.decorationHitArea.position.set(0, height / 2, 0);
   }
 }

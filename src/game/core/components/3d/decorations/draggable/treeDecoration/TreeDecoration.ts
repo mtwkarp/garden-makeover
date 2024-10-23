@@ -19,11 +19,12 @@ export default class TreeDecoration extends AbstractDraggableDecoration {
   }
 
   protected override createDecorationHitArea() {
-    const size = 1;
-    const geometry = new BoxGeometry(size, size, size);
+    const height = 0.6;
+    const geometry = new BoxGeometry(0.5, height, 0.5);
     const material = new MeshStandardMaterial({ color: new Color(1, 1, 1) });
 
     this.decorationHitArea = new Mesh(geometry, material);
-    this.decorationHitArea.position.set(0, size / 2, 0);
+    // this.decorationHitArea.visible = false
+    this.decorationHitArea.position.set(0, height / 2, 0);
   }
 }
