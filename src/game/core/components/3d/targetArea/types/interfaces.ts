@@ -7,8 +7,15 @@ export interface DecorationTargetAreaI {
   hideHint(): void;
   hide(): void;
   display(): void;
+  disabled: boolean;
+  disableForever(): void;
 }
 
 export interface DecorationTargetAreasControllerI {
   getDecorationTargetAreas(): DecorationTargetAreaI[];
+  displayTargetAreas(): void;
+  hideTargetAreas(): void;
+  getNumberOfActiveTargetAreas(): number;
+  displayHint(): void;
+  hideHint(): void;
 }

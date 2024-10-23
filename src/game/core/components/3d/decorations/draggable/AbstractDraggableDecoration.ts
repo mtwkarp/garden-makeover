@@ -1,5 +1,6 @@
 import { injectable } from 'inversify';
 import { Group, Object3D, Object3DEventMap } from 'three';
+import gsap from 'gsap';
 import { DraggableDecoration3dI } from '../types/interfaces';
 import { DraggableDecorationNames } from '../types/enums';
 
@@ -10,8 +11,6 @@ export default abstract class AbstractDraggableDecoration implements DraggableDe
   protected decorationModel: Group<Object3DEventMap> | Object3D<Object3DEventMap>;
 
   protected decorationHitArea: Object3D<Object3DEventMap>;
-
-  protected isDraggable: boolean = false;
 
   public animatePlacing(): void {}
 
@@ -25,18 +24,6 @@ export default abstract class AbstractDraggableDecoration implements DraggableDe
 
   public abstract createDecoration(): void;
 
-  public get draggable(): boolean {
-    return this.isDraggable;
-  }
-
-  public makeUndraggable(): void {
-    this.isDraggable = false;
-  }
-
-  public makeDraggable(): void {
-    this.isDraggable = true;
-  }
-
   protected abstract createDecorationHitArea(): void;
 
   public getDecorationHitArea(): Object3D<Object3DEventMap> {
@@ -45,5 +32,23 @@ export default abstract class AbstractDraggableDecoration implements DraggableDe
     }
 
     return this.decorationHitArea;
+  }
+
+  public animatePlacingDecorationOnScene(): void {
+    const scaleModifierValue: number = 0.001;
+    const yScale = this.decorationModel.scale.y;
+    const timeline = gsap.timeline({ repeat: 0 }); // No repeat, only one cycle
+
+    timeline.to(this.decorationModel.scale, {
+      duration: 0.15,
+      y: yScale - scaleModifierValue,
+      ease: 'bounce.in',
+    });
+
+    timeline.to(this.decorationModel.scale, {
+      duration: 0.3,
+      y: yScale,
+      ease: 'bounce.out',
+    });
   }
 }

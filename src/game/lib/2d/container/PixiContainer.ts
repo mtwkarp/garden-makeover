@@ -11,8 +11,16 @@ export default class PixiContainer implements ContainerI {
     this.container.interactive = true;
   }
 
+  public setRotation(rotation: number): void {
+    this.container.rotation = rotation;
+  }
+
   public get scale(): { x: number; y: number } {
     return this.container.scale;
+  }
+
+  public get position(): { x: number; y: number } {
+    return this.container.position;
   }
 
   public setTint(tint: number): void {

@@ -1,10 +1,12 @@
 import { inject, injectable } from 'inversify';
+import { EventEmitter } from 'pixi.js';
 import { SceneNames2d } from '../types/enums';
 import { MainScene2dI } from './types/interfaces';
 import { Scenes2dByNames, Scenes2dGetter } from '../types/types';
 import { TYPES } from '../../../../IoC/Types';
 import { Scene2dI } from '../../../../lib/2d/types/interfaces';
 import PixiScene from '../../../../lib/2d/scene/PixiScene';
+import { GameGlobalEvents } from '../../../events/types/enums';
 
 @injectable()
 export default class MainScene2d extends PixiScene implements MainScene2dI {
@@ -12,9 +14,24 @@ export default class MainScene2d extends PixiScene implements MainScene2dI {
 
   private activeScenes: Scenes2dByNames = {};
 
-  constructor(@inject(TYPES.Scenes2dGetter) scenesGetter: Scenes2dGetter) {
+  private readonly eventsManager: EventEmitter;
+
+  constructor(
+  @inject(TYPES.Scenes2dGetter) scenesGetter: Scenes2dGetter,
+    @inject(TYPES.GlobalEventsManager) eventsManager: EventEmitter,
+  ) {
     super();
     this.scenesGetter = scenesGetter;
+    this.eventsManager = eventsManager;
+    this.subscribe();
+  }
+
+  private subscribe(): void {
+    this.eventsManager.on(GameGlobalEvents.allDecorationsSuccessfullyPlaced, this.showOutro, this);
+  }
+
+  private showOutro(): void {
+    this.showScene(SceneNames2d.outro);
   }
 
   public get sceneName(): string {

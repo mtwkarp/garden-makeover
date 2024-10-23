@@ -14,6 +14,7 @@ import { buttons2dModule } from './modules/2d/buttons2dModule';
 import { eventsModule } from './modules/events/eventsModule';
 import { targetAreasModule } from './modules/3d/targetAreasModule';
 import { dragControlsModule } from './modules/3d/dragControlsModule';
+import { hint2dModule } from './modules/2d/hint2dModule';
 
 export default class IoCDependenciesContainer extends Container implements IoCDependenciesContainerI {
   private modules: ContainerModule[] = [
@@ -31,6 +32,7 @@ export default class IoCDependenciesContainer extends Container implements IoCDe
     eventsModule,
     targetAreasModule,
     dragControlsModule,
+    hint2dModule,
   ];
 
   public loadDependencies(): void {

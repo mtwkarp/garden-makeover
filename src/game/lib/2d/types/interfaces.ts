@@ -4,6 +4,7 @@ export interface ContainerI {
   destroy(): void;
   addChild(...children: any[]): void;
   removeChildren(...children: any[]): void;
+  setRotation(rotation: number): void;
   view: any;
   setScale(x: number, y: number): void;
   setPosition(x: number, y: number): void;
@@ -17,6 +18,7 @@ export interface ContainerI {
   offPointerDown(cb: (...args: any) => any): void;
   setTint(tint: number): void;
   scale: { x: number; y: number };
+  position: { x: number; y: number };
   width: number;
   height: number;
 }

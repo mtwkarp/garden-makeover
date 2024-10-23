@@ -18,20 +18,26 @@ export default class GameScene extends PixiScene implements Scene2dI {
 
   private buttonsContainer: ContainerI;
 
+  private lastClickedButtonName: DecorationButtonNames | null;
+
   private readonly globalEventsManager: EventEmitter;
 
   private readonly changeLightButton: ContainerI;
+
+  private hintArrow: ContainerI | null;
 
   constructor(
   @inject(TYPES.DecorationsPick2dButtonsCollection) decorationPickButtons: DecorationButtonsCollection,
     @inject(TYPES.GlobalEventsManager) globalEventsManager: EventEmitter,
     @inject(TYPES.ChangeLightButton) changeLightButton: ContainerI,
+    @inject(TYPES.HintArrow2d) hintArrow: ContainerI,
   ) {
     super();
     this.globalEventsManager = globalEventsManager;
     this.buttons = decorationPickButtons;
     this.buttonsArr = Object.keys(this.buttons).map((key) => this.buttons[key as DecorationButtonNames]);
     this.changeLightButton = changeLightButton;
+    this.hintArrow = hintArrow;
     this.initialize();
   }
 
@@ -39,6 +45,15 @@ export default class GameScene extends PixiScene implements Scene2dI {
     this.createChildren();
     this.setPositionsForButtons();
     this.subscribe();
+    this.displayHint();
+  }
+
+  private displayHint(): void {
+    if (this.hintArrow !== null) {
+      const bushButtonPosition = this.buttons[DecorationButtonNames.bush].position;
+      this.hintArrow.setPosition(bushButtonPosition.x - 90, bushButtonPosition.y);
+      this.buttonsContainer.addChild(this.hintArrow.view);
+    }
   }
 
   private createChildren(): void {
@@ -72,11 +87,30 @@ export default class GameScene extends PixiScene implements Scene2dI {
   private subscribe(): void {
     this.globalEventsManager.on(GameGlobalEvents.decorationButtonClick, this.onDecorationPickButtonClick, this);
     this.globalEventsManager.on(GameGlobalEvents.cancelDecorationButtonClick, this.onDiscardButtonClick, this);
+    this.globalEventsManager.on(GameGlobalEvents.decorationSuccessfullyPlaced, this.onSuccessfulDecorationPlacing, this);
   }
 
-  private onDecorationPickButtonClick(): void {
+  private onSuccessfulDecorationPlacing(): void {
+    if (this.lastClickedButtonName) {
+      this.buttons[this.lastClickedButtonName].disableForever();
+    }
+
+    this.buttons[DecorationButtonNames.discard].hide();
+    this.enableDecorationButtons();
+  }
+
+  private removeHint(): void {
+    if (this.hintArrow !== null) {
+      this.hintArrow.destroy();
+      this.hintArrow = null;
+    }
+  }
+
+  private onDecorationPickButtonClick(name: DecorationButtonNames): void {
+    this.removeHint();
     this.buttons[DecorationButtonNames.discard].show();
     this.disableDecorationButtons();
+    this.lastClickedButtonName = name;
   }
 
   private onDiscardButtonClick(): void {

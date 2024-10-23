@@ -11,6 +11,11 @@
       "textures": null
     },
     {
+      "alias": "hint-arrow.fbx",
+      "src": "assets/3d/hint/hint-arrow.fbx",
+      "textures": null
+    },
+    {
       "alias": "House.fbx",
       "src": "assets/3d/house/House.fbx",
       "textures": null

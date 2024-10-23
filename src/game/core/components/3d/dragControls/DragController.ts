@@ -1,11 +1,13 @@
 import * as THREE from 'three';
 import { inject, injectable } from 'inversify';
 import { Group, Object3D, Object3DEventMap } from 'three';
+import { EventEmitter } from 'pixi.js';
 import { DecorationTargetAreaI } from '../targetArea/types/interfaces';
 import { DraggableDecoration3dI } from '../decorations/types/interfaces';
 import { TYPES } from '../../../../IoC/Types';
 import Three3dEngine from '../../../../engines/3dEngine/Three3dEngine';
 import { DragControllerI } from './types/interfaces';
+import { GameGlobalEvents } from '../../../events/types/enums';
 
 @injectable()
 export default class DragController implements DragControllerI {
@@ -33,9 +35,12 @@ export default class DragController implements DragControllerI {
 
   private readonly mouse: THREE.Vector2;
 
-  private draggableDecoration: DraggableDecoration3dI;
+  private readonly eventManager: EventEmitter;
 
-  constructor(@inject(TYPES.Engine3d) engine3d: Three3dEngine) {
+  constructor(
+  @inject(TYPES.Engine3d) engine3d: Three3dEngine,
+    @inject(TYPES.GlobalEventsManager) eventsManager: EventEmitter,
+  ) {
     this.camera = engine3d.getCamera();
     this.domElement = document.getElementById('2d-view-container') as HTMLElement;
     this.plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
@@ -43,6 +48,7 @@ export default class DragController implements DragControllerI {
     this.intersection = new THREE.Vector3();
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
+    this.eventManager = eventsManager;
 
     this.subscribeForDomEvents();
   }
@@ -55,8 +61,15 @@ export default class DragController implements DragControllerI {
 
   public setDraggable(draggable: DraggableDecoration3dI): void {
     this.draggableModel = draggable.getDecoration();
-    this.draggableDecoration = draggable;
     this.hitAreas = [draggable.getDecorationHitArea()];
+  }
+
+  public unsetHitAreas(): void {
+    this.hitAreas = [];
+  }
+
+  public unsetTargetAreas(): void {
+    this.targetAreas = [];
   }
 
   public unsetDraggable(): void {
@@ -120,26 +133,41 @@ export default class DragController implements DragControllerI {
     event.preventDefault();
 
     for (let i = 0; i < this.targetAreas.length; i++) {
-      const targetArea = this.targetAreas[i].getDecorationTargetArea();
+      const targetArea = this.targetAreas[i];
 
-      if (this.selected) {
-        const dx = this.selected.position.x - targetArea.position.x;
-        const dz = this.selected.position.z - targetArea.position.z;
+      const targetArea3dObject = targetArea.getDecorationTargetArea();
+
+      if (this.selected && !targetArea.disabled) {
+        const dx = this.selected.position.x - targetArea3dObject.position.x;
+        const dz = this.selected.position.z - targetArea3dObject.position.z;
         const distance = Math.sqrt(dx * dx + dz * dz);
 
-        const { outerRadius } = (targetArea.geometry as THREE.RingGeometry).parameters;
+        const { outerRadius } = (targetArea3dObject.geometry as THREE.RingGeometry).parameters;
 
         if (distance <= outerRadius) {
-          this.selected.position.set(targetArea.position.x, this.selected.position.y, targetArea.position.z);
+          this.selected.position.set(targetArea3dObject.position.x, this.selected.position.y, targetArea3dObject.position.z);
 
           if (this.draggableModel) {
-            this.draggableModel.position.set(targetArea.position.x, this.draggableModel.position.y, targetArea.position.z);
+            this.draggableModel.position.set(
+              targetArea3dObject.position.x,
+              this.draggableModel.position.y,
+              targetArea3dObject.position.z,
+            );
           }
+
+          this.onSuccessfulDecorationPlace(targetArea);
         }
       }
     }
 
     this.selected = null;
+  }
+
+  private onSuccessfulDecorationPlace(targetArea: DecorationTargetAreaI): void {
+    this.unsetDraggable();
+    this.unsetHitAreas();
+    this.unsetTargetAreas();
+    this.eventManager.emit(GameGlobalEvents.decorationSuccessfullyPlaced, targetArea);
   }
 
   private updateMouse(event: MouseEvent): void {

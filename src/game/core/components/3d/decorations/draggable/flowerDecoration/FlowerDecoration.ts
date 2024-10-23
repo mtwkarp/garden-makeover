@@ -20,12 +20,13 @@ export default class FlowerDecoration extends AbstractDraggableDecoration {
     this.decorationModel = flower;
   }
 
-  protected override createDecorationHitArea() {
+  protected override createDecorationHitArea(): void {
     const height = 0.7;
     const geometry = new BoxGeometry(0.2, height, 0.2);
     const material = new MeshStandardMaterial({ color: new Color(1, 1, 1) });
 
     this.decorationHitArea = new Mesh(geometry, material);
+    this.decorationHitArea.visible = false;
     this.decorationHitArea.position.set(0, height / 2, 0);
   }
 }

@@ -17,6 +17,17 @@ export default class DecorationTargetAreasController implements DecorationTarget
     this.targetAreas = targetAreas;
   }
 
+  public displayTargetAreas(): void {
+    this.targetAreas.forEach((targetArea) => {
+      targetArea.display();
+    });
+  }
+
+  public hideTargetAreas(): void {
+    this.targetAreas.forEach((targetArea) => targetArea.hide());
+    this.targetAreas.forEach((targetArea) => targetArea.hideHint());
+  }
+
   public getDecorationTargetAreas(): DecorationTargetAreaI[] {
     for (let i = 0; i < this.targetAreasPositions.length; i++) {
       const targetArea = this.targetAreas[i];
@@ -32,9 +43,15 @@ export default class DecorationTargetAreasController implements DecorationTarget
     return this.targetAreas;
   }
 
-  public hideAllTargetAreas(): void {
-    // this.targetAreasPositions.forEach((targetArea) => {targetArea.})
+  public getNumberOfActiveTargetAreas(): number {
+    return this.targetAreas.filter((targetArea) => !targetArea.disabled).length;
   }
 
-  public showAllTargetAreas(): void {}
+  public displayHint(): void {
+    this.targetAreas[2].displayHint();
+  }
+
+  public hideHint(): void {
+    this.targetAreas[2].hideHint();
+  }
 }

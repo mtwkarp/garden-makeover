@@ -25,6 +25,10 @@
       "src": "assets/2d/gameScreen/icons/tree.png"
     },
     {
+      "alias": "hint/green-arrow.png",
+      "src": "assets/2d/hint/green-arrow.png"
+    },
+    {
       "alias": "outroScreen/download-button.png",
       "src": "assets/2d/outroScreen/download-button.png"
     },

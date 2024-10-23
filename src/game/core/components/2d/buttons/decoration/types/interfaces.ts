@@ -6,4 +6,5 @@ export interface DecorationPickButtonI extends ContainerI {
   decorationName: DecorationButtonNames;
   enable(): void;
   disable(): void;
+  disableForever(): void;
 }

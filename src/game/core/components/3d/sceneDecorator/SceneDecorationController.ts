@@ -4,7 +4,7 @@ import { SceneDecorationControllerI } from './types/interfaces';
 import { DraggableDecorationNames } from '../decorations/types/enums';
 import { TYPES } from '../../../../IoC/Types';
 import { MainScene3dI } from '../../../scenes/3d/mainScene3d/types/interfaces';
-import { DecorationTargetAreasControllerI } from '../targetArea/types/interfaces';
+import { DecorationTargetAreaI, DecorationTargetAreasControllerI } from '../targetArea/types/interfaces';
 import { GameGlobalEvents } from '../../../events/types/enums';
 import { DecorationButtonNames } from '../../2d/buttons/decoration/types/enums';
 import { DraggableDecoration3dI, DraggableDecorations3dManagerI } from '../decorations/types/interfaces';
@@ -46,6 +46,7 @@ export default class SceneDecorationController implements SceneDecorationControl
   private subscribe(): void {
     this.eventsManager.on(GameGlobalEvents.decorationButtonClick, this.onDecorationPick, this);
     this.eventsManager.on(GameGlobalEvents.cancelDecorationButtonClick, this.onDecorationCancel, this);
+    this.eventsManager.on(GameGlobalEvents.decorationSuccessfullyPlaced, this.onDecorationSuccessfulPlacing, this);
   }
 
   private onDecorationPick(decorationButtonName: DecorationButtonNames): void {
@@ -72,15 +73,26 @@ export default class SceneDecorationController implements SceneDecorationControl
     if (this.currentDecoration) {
       this.scene.addToScene(this.currentDecoration.getDecoration());
       this.scene.addToScene(this.currentDecoration.getDecorationHitArea());
+      this.currentDecoration.animatePlacingDecorationOnScene();
       this.dragController.setDraggable(this.currentDecoration);
       this.dragController.setTargetAreas(this.targetAreasController.getDecorationTargetAreas());
+      this.targetAreasController.displayTargetAreas();
+      this.displayHint();
+    }
+  }
+
+  private displayHint(): void {
+    if (this.targetAreasController.getNumberOfActiveTargetAreas() === 3) {
+      this.targetAreasController.displayHint();
     }
   }
 
   private onDecorationCancel(): void {
     if (this.currentDecoration) {
       this.scene.removeFromScene(this.currentDecoration.getDecoration());
-      this.currentDecoration.makeUndraggable();
+      this.scene.removeFromScene(this.currentDecoration.getDecorationHitArea());
+      this.targetAreasController.hideTargetAreas();
+      this.targetAreasController.hideHint();
       this.currentDecoration = null;
     }
   }
@@ -89,14 +101,22 @@ export default class SceneDecorationController implements SceneDecorationControl
     this.targetAreasController.getDecorationTargetAreas().forEach((targetArea) => {
       this.scene.addToScene(targetArea.getDecorationTargetArea());
     });
+
+    this.targetAreasController.hideTargetAreas();
   }
 
-  private objectPlaced(): void {
-    if (!this.currentDecoration) {
-      throw new Error('No current decoration was set.');
+  private onDecorationSuccessfulPlacing(decorationTargetArea: DecorationTargetAreaI): void {
+    this.targetAreasController.hideTargetAreas();
+    this.targetAreasController.hideHint();
+    decorationTargetArea.disableForever();
+
+    if (this.currentDecoration) {
+      this.currentDecoration?.animatePlacingDecorationOnScene();
+      this.currentDecoration = null;
     }
 
-    this.currentDecoration.makeUndraggable();
-    this.currentDecoration = null;
+    if (this.targetAreasController.getNumberOfActiveTargetAreas() === 0) {
+      this.eventsManager.emit(GameGlobalEvents.allDecorationsSuccessfullyPlaced);
+    }
   }
 }

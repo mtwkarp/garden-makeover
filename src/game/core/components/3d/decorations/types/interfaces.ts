@@ -8,10 +8,8 @@ export interface Decoration3dI {
 export interface DraggableDecoration3dI extends Decoration3dI {
   animatePlacing(): void;
   name: DraggableDecorationNames;
-  draggable: boolean;
-  makeUndraggable(): void;
-  makeDraggable(): void;
   getDecorationHitArea(): Object3D<Object3DEventMap>;
+  animatePlacingDecorationOnScene(): void;
 }
 
 export interface StaticDecorations3dManagerI {

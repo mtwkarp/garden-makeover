@@ -18,6 +18,8 @@ export default abstract class AbstractDecorationButton extends PixiContainer imp
 
   protected readonly globalEventsManager: EventEmitter;
 
+  protected disabledForever: boolean = false;
+
   public abstract readonly decorationName: DecorationButtonNames;
 
   constructor(@inject(TYPES.GlobalEventsManager) globalEventsManager: EventEmitter) {
@@ -69,6 +71,11 @@ export default abstract class AbstractDecorationButton extends PixiContainer imp
     });
   }
 
+  public disableForever(): void {
+    this.disable();
+    this.disabledForever = true;
+  }
+
   public disable(): void {
     this.makeNoninteractive();
     this.disableButtonMode();
@@ -76,6 +83,10 @@ export default abstract class AbstractDecorationButton extends PixiContainer imp
   }
 
   public enable(): void {
+    if (this.disabledForever) {
+      return;
+    }
+
     this.makeInteractive();
     this.enableButtonMode();
     this.view.tint = 16777215;
