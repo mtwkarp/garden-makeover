@@ -3,15 +3,28 @@ import * as THREE from 'three';
 import { MainScene3dI } from './types/interfaces';
 import { TYPES } from '../../../../IoC/Types';
 import { GraphicsEngine3dI } from '../../../../engines/types/interfaces';
-import { SceneLightI } from '../../../components/3d/light/types/interaces';
+import { SceneLightsManagerI } from '../../../components/3d/lights/types/interfaces';
 
 @injectable()
 export default class MainScene3d implements MainScene3dI {
   private readonly scene: THREE.Scene;
 
-  constructor(@inject(TYPES.Engine3d) engine3d: GraphicsEngine3dI, @inject(TYPES.SceneLight) sceneLight: SceneLightI) {
+  private readonly lightsManager: SceneLightsManagerI;
+
+  constructor(
+  @inject(TYPES.Engine3d) engine3d: GraphicsEngine3dI,
+    @inject(TYPES.SceneLightsManager) lightsManager: SceneLightsManagerI,
+  ) {
     this.scene = engine3d.scene;
-    sceneLight.setScene(this.scene);
+    this.lightsManager = lightsManager;
+
+    this.addLights();
+  }
+
+  private addLights(): void {
+    this.lightsManager.getSceneLights().forEach((light) => {
+      this.addToScene(light);
+    });
   }
 
   public addToScene(obj: any): void {

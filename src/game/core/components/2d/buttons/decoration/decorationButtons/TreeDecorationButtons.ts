@@ -19,19 +19,11 @@ export default class TreeDecorationButton extends AbstractDecorationButton {
     this.subscribe();
   }
 
-  protected createButtonBackground(): void {
-    const background = new PixiSprite('gameScreen/buttons/simple-button.png');
-    background.view.tint = this.buttonBackgroundTint;
-    background.view.cursor = 'pointer';
-
-    this.spritesContainer.addChild(background.view);
-  }
-
   protected createIcon(): void {
     const icon = new PixiSprite('gameScreen/icons/tree.png');
     icon.setScale(0.6, 0.6);
-    icon.view.tint = this.buttonBackgroundTint;
-    icon.view.cursor = 'pointer';
+    icon.setTint(this.buttonBackgroundTint);
+    icon.enableButtonMode();
 
     this.spritesContainer.addChild(icon.view);
   }

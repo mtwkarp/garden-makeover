@@ -8,6 +8,8 @@ import FlowerDecorationButton from '../../../core/components/2d/buttons/decorati
 import DiscardPickedDecorationButton from '../../../core/components/2d/buttons/decoration/discardButton/DiscardPickedDecorationButton';
 import { ContainerI } from '../../../lib/2d/types/interfaces';
 import LightChangeButton from '../../../core/components/2d/buttons/lightChange/LightChangeButton';
+import { DecorationButtonsManager } from '../../../core/components/2d/buttons/decoration/DecorationButtonsManager';
+import { DecorationButtonsManagerI } from '../../../core/components/2d/buttons/decoration/types/interfaces';
 
 export const buttons2dModule = new ContainerModule((bind) => {
   bind<DecorationButtonsCollection>(TYPES.DecorationsPick2dButtonsCollection).toDynamicValue(
@@ -20,4 +22,5 @@ export const buttons2dModule = new ContainerModule((bind) => {
   );
 
   bind<ContainerI>(TYPES.ChangeLightButton).to(LightChangeButton);
+  bind<DecorationButtonsManagerI>(TYPES.DecorationButtonsManager).to(DecorationButtonsManager);
 });

@@ -45,7 +45,7 @@ export default class DiscardPickedDecorationButton extends AbstractDecorationBut
     });
   }
 
-  protected createButtonBackground(): void {
+  protected override createButtonBackground(): void {
     const background = new PixiSprite('gameScreen/buttons/simple-button.png');
     background.enableButtonMode();
 

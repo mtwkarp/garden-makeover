@@ -98,4 +98,12 @@ export default class PixiContainer implements ContainerI {
   public offPointerDown(cb: (...args: any) => any): void {
     this.container.off('pointerdown', cb);
   }
+
+  public get alpha(): number {
+    return this.container.alpha;
+  }
+
+  public set alpha(value: number) {
+    this.container.alpha = value;
+  }
 }

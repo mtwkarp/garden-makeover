@@ -21,6 +21,7 @@ export interface ContainerI {
   position: { x: number; y: number };
   width: number;
   height: number;
+  alpha: number;
 }
 
 export interface SpriteI extends ContainerI {

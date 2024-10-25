@@ -12,7 +12,6 @@ export default class BushDecoration extends AbstractDraggableDecoration {
 
   public createDecoration(): void {
     const bush = ModelsCache.getModel('BushWithBerrys.fbx');
-
     bush.scale.set(0.007, 0.007, 0.007);
 
     this.decorationModel = bush;

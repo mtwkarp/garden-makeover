@@ -1,46 +1,22 @@
 import { inject, injectable } from 'inversify';
 import { Sky } from 'three/examples/jsm/objects/Sky';
 import * as THREE from 'three';
-import { EventEmitter } from 'pixi.js';
 import { TYPES } from '../../../../../../IoC/Types';
-import { Decoration3dI } from '../../types/interfaces';
 import { GraphicsEngine3dI } from '../../../../../../engines/types/interfaces';
-import { GameGlobalEvents } from '../../../../../events/types/enums';
+import AbstractStaticDecoration from '../AbstractStaticDecoration';
 
 @injectable()
-export default class SkyBackground implements Decoration3dI {
+export default class SkyBackground extends AbstractStaticDecoration {
   private readonly renderer: THREE.WebGLRenderer;
-
-  private readonly eventsManager: EventEmitter;
-
-  private mode: 'day' | 'night' = 'day';
 
   private sky: Sky | undefined;
 
-  constructor(
-  @inject(TYPES.Engine3d) engine3d: GraphicsEngine3dI,
-    @inject(TYPES.GlobalEventsManager) eventsManager: EventEmitter,
-  ) {
-    this.eventsManager = eventsManager;
+  constructor(@inject(TYPES.Engine3d) engine3d: GraphicsEngine3dI) {
+    super();
     this.renderer = engine3d.getRenderer();
-    this.subscribe();
   }
 
-  private subscribe(): void {
-    this.eventsManager.on(GameGlobalEvents.changeLightningButtonClick, this.toggleLightMode, this);
-  }
-
-  private toggleLightMode(): void {
-    if (this.mode === 'day') {
-      this.setNightMode();
-    } else {
-      this.setDayMode();
-    }
-  }
-
-  private setDayMode(): void {
-    this.mode = 'day';
-
+  protected setDayMode(): void {
     if (!this.sky) {
       return;
     }
@@ -50,9 +26,7 @@ export default class SkyBackground implements Decoration3dI {
     uniforms.rayleigh.value = 3;
   }
 
-  private setNightMode(): void {
-    this.mode = 'night';
-
+  protected setNightMode(): void {
     if (!this.sky) {
       return;
     }

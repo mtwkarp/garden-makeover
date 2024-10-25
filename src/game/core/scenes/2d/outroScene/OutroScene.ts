@@ -20,7 +20,7 @@ export default class OutroScene extends PixiScene implements Scene2dI {
   }
 
   private animateSceneAppearance(): void {
-    this.view.alpha = 0;
+    this.alpha = 0;
 
     gsap.to(this.view, {
       alpha: 1,
@@ -48,7 +48,7 @@ export default class OutroScene extends PixiScene implements Scene2dI {
     logo.setScale(0.2, 0.2);
     logo.setPositionY(-100);
 
-    this.view.addChild(logo.view);
+    this.addChild(logo.view);
   }
 
   private createBackground(): void {
@@ -59,7 +59,7 @@ export default class OutroScene extends PixiScene implements Scene2dI {
     graphic.pivot.set(window.innerWidth / 2, window.innerHeight / 2);
     graphic.alpha = 0.5;
 
-    this.view.addChild(graphic);
+    this.addChild(graphic);
   }
 
   private createDownloadButton(): void {
@@ -82,10 +82,10 @@ export default class OutroScene extends PixiScene implements Scene2dI {
     const button = new PixiSprite('outroScreen/download-button.png');
     button.setScale(0.3, 0.3);
     button.setPositionY(100);
-    button.view.cursor = 'pointer';
-    button.view.on('pointerdown', this.onDownloadButtonClick.bind(this));
+    button.enableButtonMode();
+    button.onPointerDown(this.onDownloadButtonClick.bind(this));
 
-    gsap.to(button.view.scale, {
+    gsap.to(button.scale, {
       x: 0.4,
       y: 0.4,
       duration: 1.5,
@@ -94,8 +94,8 @@ export default class OutroScene extends PixiScene implements Scene2dI {
       repeat: -1,
     });
 
-    button.view.addChild(text);
-    this.view.addChild(button.view);
+    button.addChild(text);
+    this.addChild(button.view);
   }
 
   private onDownloadButtonClick(): void {

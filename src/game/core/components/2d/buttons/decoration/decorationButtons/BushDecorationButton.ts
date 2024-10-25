@@ -19,18 +19,10 @@ export default class BushDecorationButton extends AbstractDecorationButton {
     this.subscribe();
   }
 
-  protected createButtonBackground(): void {
-    const background = new PixiSprite('gameScreen/buttons/simple-button.png');
-    background.view.tint = this.buttonBackgroundTint;
-    background.view.cursor = 'pointer';
-
-    this.spritesContainer.addChild(background.view);
-  }
-
   protected createIcon(): void {
     const icon = new PixiSprite('gameScreen/icons/bush.png');
     icon.setScale(0.7, 0.7);
-    icon.view.cursor = 'pointer';
+    icon.enableButtonMode();
 
     this.spritesContainer.addChild(icon.view);
   }
