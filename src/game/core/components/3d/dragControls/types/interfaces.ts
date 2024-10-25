@@ -5,4 +5,5 @@ export interface DragControllerI {
   setDraggable(draggable: DraggableDecoration3dI): void;
   unsetDraggable(): void;
   setTargetAreas(targetAreas: DecorationTargetAreaI[]): void;
+  lastPlacedTargetArea: DecorationTargetAreaI;
 }

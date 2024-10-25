@@ -1,16 +1,14 @@
-import { inject, injectable } from 'inversify';
-import { EventEmitter } from 'pixi.js';
+import { injectable } from 'inversify';
 import AbstractDecorationButton from '../AbstractDecorationButton';
 import PixiSprite from '../../../../../../lib/2d/sprite/PixiSprite';
 import { DecorationButtonNames } from '../types/enums';
-import { TYPES } from '../../../../../../IoC/Types';
 
 @injectable()
 export default class TreeDecorationButton extends AbstractDecorationButton {
   public readonly decorationName: DecorationButtonNames = DecorationButtonNames.tree;
 
-  constructor(@inject(TYPES.GlobalEventsManager) globalEventsManager: EventEmitter) {
-    super(globalEventsManager);
+  constructor() {
+    super();
     this.initialize();
   }
 

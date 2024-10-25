@@ -1,19 +1,17 @@
-import { inject, injectable } from 'inversify';
-import { EventEmitter } from 'pixi.js';
+import { injectable } from 'inversify';
 import gsap from 'gsap';
 import { DecorationPickButtonI } from '../types/interfaces';
 import AbstractDecorationButton from '../AbstractDecorationButton';
 import PixiSprite from '../../../../../../lib/2d/sprite/PixiSprite';
 import { DecorationButtonNames } from '../types/enums';
-import { TYPES } from '../../../../../../IoC/Types';
-import { GameGlobalEvents } from '../../../../../events/types/enums';
+import { DecorationButtonsInteractionEvents } from '../../../../../observables/types/enums';
 
 @injectable()
 export default class DiscardPickedDecorationButton extends AbstractDecorationButton implements DecorationPickButtonI {
   public readonly decorationName: DecorationButtonNames = DecorationButtonNames.discard;
 
-  constructor(@inject(TYPES.GlobalEventsManager) globalEventsManager: EventEmitter) {
-    super(globalEventsManager);
+  constructor() {
+    super();
 
     this.initialize();
   }
@@ -61,6 +59,6 @@ export default class DiscardPickedDecorationButton extends AbstractDecorationBut
   }
 
   protected override triggerClickEvent(): void {
-    this.globalEventsManager.emit(GameGlobalEvents.cancelDecorationButtonClick);
+    this.interactionObservable.notify(DecorationButtonsInteractionEvents.cancelDecorationButtonClick, this.decorationName);
   }
 }

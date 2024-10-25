@@ -1,23 +1,25 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GraphicsEngine3dI } from '../types/interfaces';
+import { TYPES } from '../../IoC/Types';
+import { ObservableI } from '../../lib/observable/types/interfaces';
+import { ResizeData } from '../../core/observables/types/types';
 
 @injectable()
 export default class Three3dEngine implements GraphicsEngine3dI {
   private readonly scene3d: THREE.Scene;
 
-  private readonly camera: THREE.PerspectiveCamera;
+  private camera: THREE.PerspectiveCamera;
 
-  private readonly renderer: THREE.WebGLRenderer;
+  private renderer: THREE.WebGLRenderer;
 
-  private orbitControls: OrbitControls;
+  private readonly resizeObservable: ObservableI<ResizeData>;
 
-  constructor() {
+  constructor(@inject(TYPES.ResizeObservable) resizeObservable: ObservableI<ResizeData>) {
+    this.resizeObservable = resizeObservable;
     this.scene3d = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   }
 
   private appendViewIntoContainer(): void {
@@ -30,6 +32,12 @@ export default class Three3dEngine implements GraphicsEngine3dI {
     container.appendChild(this.renderer.domElement);
   }
 
+  private setupRenderer(): void {
+    const { screenWidth, screenHeight } = this.resizeObservable.getData();
+
+    this.renderer.setSize(screenWidth, screenHeight);
+  }
+
   private setupCamera(): void {
     this.camera.position.z = 3;
     this.camera.position.y = 1.2;
@@ -37,16 +45,16 @@ export default class Three3dEngine implements GraphicsEngine3dI {
     this.camera.lookAt(new THREE.Vector3(-1.2, 0.7, 0));
   }
 
-  private setupOrbitControls(): void {
-    if (process.env.NODE_ENV === 'development' && process.env.ENABLE_ORBIT_CONTROLS) {
-      // this.orbitControls = new OrbitControls(this.camera, document.getElementById('2d-view-container'));
-    }
+  private subscribe(): void {
+    this.resizeObservable.subscribe(this.resize, this);
   }
 
   public async initialize(): Promise<void> {
+    this.setupRenderer();
     this.setupCamera();
-    this.setupOrbitControls();
     this.appendViewIntoContainer();
+    this.subscribe();
+    this.resize();
   }
 
   public update(): void {
@@ -63,5 +71,14 @@ export default class Three3dEngine implements GraphicsEngine3dI {
 
   public getCamera(): any {
     return this.camera;
+  }
+
+  private resize(): void {
+    const { screenWidth, screenHeight } = this.resizeObservable.getData();
+
+    this.camera.aspect = screenWidth / screenHeight;
+    this.camera.updateProjectionMatrix();
+
+    this.renderer.setSize(screenWidth, screenHeight);
   }
 }

@@ -16,7 +16,6 @@ export const TYPES = {
   DraggableDecorations3dCollection: Symbol.for('DraggableDecorations3dCollection'),
   Decorations3dManager: Symbol.for('Decorations3dManager'),
   DecorationsPick2dButtonsCollection: Symbol.for('DecorationsPick2dButtonsCollection'),
-  GlobalEventsManager: Symbol.for('GlobalEvents'),
   ChangeLightButton: Symbol.for('ChangeLightButton'),
   DecorationButtonsManager: Symbol.for('DecorationButtonsManager'),
   SceneLightsManager: Symbol.for('SceneLight'),
@@ -30,4 +29,7 @@ export const TYPES = {
   Elements3dThemeModeService: Symbol.for('LightModeService'),
   UIThemeModeService: Symbol.for('UIThemeModeService'),
   ThemeModeServices: Symbol.for('ThemeModeServices'),
+  GameProcessObservable: Symbol.for('GameProcessObservable'),
+  DecorationButtonsInteractionObservable: Symbol.for('DecorationButtonsInteractionObservable'),
+  ResizeObservable: Symbol.for('ResizeObservable'),
 };

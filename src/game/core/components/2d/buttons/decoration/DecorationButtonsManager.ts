@@ -1,13 +1,13 @@
 import { inject, injectable } from 'inversify';
-import { EventEmitter } from 'pixi.js';
 import PixiContainer from '../../../../../lib/2d/container/PixiContainer';
 import { TYPES } from '../../../../../IoC/Types';
 import { DecorationButtonsCollection } from './types/types';
 import { ContainerI } from '../../../../../lib/2d/types/interfaces';
 import { DecorationButtonNames } from './types/enums';
 import { DecorationButtonsManagerI, DecorationPickButtonI } from './types/interfaces';
-import { GameGlobalEvents } from '../../../../events/types/enums';
 import { UIThemeModeServiceI } from '../../../../lightModes/types/interfaces';
+import { MultipleValuesObservableI } from '../../../../../lib/observable/types/interfaces';
+import { DecorationButtonsInteractionEvents, GameProcessEvents } from '../../../../observables/types/enums';
 
 @injectable()
 export class DecorationButtonsManager implements DecorationButtonsManagerI {
@@ -19,20 +19,31 @@ export class DecorationButtonsManager implements DecorationButtonsManagerI {
 
   private lastClickedButtonName: DecorationButtonNames | null;
 
-  private readonly globalEventsManager: EventEmitter;
-
   private hintArrow: ContainerI | null;
 
   private readonly themeModeService: UIThemeModeServiceI;
 
+  private readonly gameProcessObservable: MultipleValuesObservableI<GameProcessEvents, null>;
+
+  private readonly decorationButtonsInteractionObservable: MultipleValuesObservableI<
+  DecorationButtonsInteractionEvents,
+  DecorationButtonNames
+  >;
+
   constructor(
   @inject(TYPES.DecorationsPick2dButtonsCollection) decorationPickButtons: DecorationButtonsCollection,
-    @inject(TYPES.GlobalEventsManager) globalEventsManager: EventEmitter,
     @inject(TYPES.HintArrow2d) hintArrow: ContainerI,
     @inject(TYPES.UIThemeModeService) themeModeService: UIThemeModeServiceI,
+    @inject(TYPES.GameProcessObservable) gameProcessObservable: MultipleValuesObservableI<GameProcessEvents, null>,
+    @inject(TYPES.DecorationButtonsInteractionObservable)
+    decorationButtonsInteractionObservable: MultipleValuesObservableI<
+    DecorationButtonsInteractionEvents,
+    DecorationButtonNames
+    >,
   ) {
+    this.gameProcessObservable = gameProcessObservable;
+    this.decorationButtonsInteractionObservable = decorationButtonsInteractionObservable;
     this.themeModeService = themeModeService;
-    this.globalEventsManager = globalEventsManager;
     this.buttons = decorationPickButtons;
     this.buttonsArr = Object.keys(this.buttons).map((key) => this.buttons[key as DecorationButtonNames]);
     this.hintArrow = hintArrow;
@@ -94,9 +105,23 @@ export class DecorationButtonsManager implements DecorationButtonsManagerI {
   }
 
   private subscribe(): void {
-    this.globalEventsManager.on(GameGlobalEvents.decorationButtonClick, this.onDecorationPickButtonClick, this);
-    this.globalEventsManager.on(GameGlobalEvents.cancelDecorationButtonClick, this.onDiscardButtonClick, this);
-    this.globalEventsManager.on(GameGlobalEvents.decorationSuccessfullyPlaced, this.onSuccessfulDecorationPlacing, this);
+    this.decorationButtonsInteractionObservable.subscribe(
+      DecorationButtonsInteractionEvents.decorationButtonClick,
+      this.onDecorationPickButtonClick,
+      this,
+    );
+
+    this.decorationButtonsInteractionObservable.subscribe(
+      DecorationButtonsInteractionEvents.cancelDecorationButtonClick,
+      this.onDiscardButtonClick,
+      this,
+    );
+
+    this.gameProcessObservable.subscribe(
+      GameProcessEvents.decorationSuccessfullyPlaced,
+      this.onSuccessfulDecorationPlacing,
+      this,
+    );
   }
 
   private onSuccessfulDecorationPlacing(): void {

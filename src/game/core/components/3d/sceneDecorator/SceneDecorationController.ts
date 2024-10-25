@@ -1,14 +1,14 @@
 import { inject, injectable } from 'inversify';
-import { EventEmitter } from 'pixi.js';
 import { SceneDecorationControllerI } from './types/interfaces';
 import { DraggableDecorationNames } from '../decorations/types/enums';
 import { TYPES } from '../../../../IoC/Types';
 import { MainScene3dI } from '../../../scenes/3d/mainScene3d/types/interfaces';
-import { DecorationTargetAreaI, DecorationTargetAreasControllerI } from '../targetArea/types/interfaces';
-import { GameGlobalEvents } from '../../../events/types/enums';
+import { DecorationTargetAreasControllerI } from '../targetArea/types/interfaces';
 import { DecorationButtonNames } from '../../2d/buttons/decoration/types/enums';
 import { DraggableDecoration3dI, DraggableDecorations3dManagerI } from '../decorations/types/interfaces';
 import { DragControllerI } from '../dragControls/types/interfaces';
+import { MultipleValuesObservableI } from '../../../../lib/observable/types/interfaces';
+import { DecorationButtonsInteractionEvents, GameProcessEvents } from '../../../observables/types/enums';
 
 @injectable()
 export default class SceneDecorationController implements SceneDecorationControllerI {
@@ -20,19 +20,30 @@ export default class SceneDecorationController implements SceneDecorationControl
 
   private readonly draggableDecorationsManager: DraggableDecorations3dManagerI;
 
-  private readonly eventsManager: EventEmitter;
-
   private readonly dragController: DragControllerI;
+
+  private readonly decorationButtonsInteractionObservable: MultipleValuesObservableI<
+  DecorationButtonsInteractionEvents,
+  DecorationButtonNames
+  >;
+
+  private readonly gameProcessObservable: MultipleValuesObservableI<GameProcessEvents, null>;
 
   constructor(
   @inject(TYPES.MainScene3d) scene: MainScene3dI,
     @inject(TYPES.DecorationTargetAreasController) targetAreasController: DecorationTargetAreasControllerI,
-    @inject(TYPES.GlobalEventsManager) eventsManager: EventEmitter,
     @inject(TYPES.DraggableDecorations3dManager) draggableDecorations3dManager: DraggableDecorations3dManagerI,
     @inject(TYPES.DragController) dragController: DragControllerI,
+    @inject(TYPES.DecorationButtonsInteractionObservable)
+    decorationButtonsInteractionObservable: MultipleValuesObservableI<
+    DecorationButtonsInteractionEvents,
+    DecorationButtonNames
+    >,
+    @inject(TYPES.GameProcessObservable) gameProcessObservable: MultipleValuesObservableI<GameProcessEvents, null>,
   ) {
+    this.decorationButtonsInteractionObservable = decorationButtonsInteractionObservable;
     this.scene = scene;
-    this.eventsManager = eventsManager;
+    this.gameProcessObservable = gameProcessObservable;
     this.targetAreasController = targetAreasController;
     this.draggableDecorationsManager = draggableDecorations3dManager;
     this.dragController = dragController;
@@ -44,9 +55,23 @@ export default class SceneDecorationController implements SceneDecorationControl
   }
 
   private subscribe(): void {
-    this.eventsManager.on(GameGlobalEvents.decorationButtonClick, this.onDecorationPick, this);
-    this.eventsManager.on(GameGlobalEvents.cancelDecorationButtonClick, this.onDecorationCancel, this);
-    this.eventsManager.on(GameGlobalEvents.decorationSuccessfullyPlaced, this.onDecorationSuccessfulPlacing, this);
+    this.decorationButtonsInteractionObservable.subscribe(
+      DecorationButtonsInteractionEvents.decorationButtonClick,
+      this.onDecorationPick,
+      this,
+    );
+
+    this.decorationButtonsInteractionObservable.subscribe(
+      DecorationButtonsInteractionEvents.cancelDecorationButtonClick,
+      this.onDecorationCancel,
+      this,
+    );
+
+    this.gameProcessObservable.subscribe(
+      GameProcessEvents.decorationSuccessfullyPlaced,
+      this.onDecorationSuccessfulPlacing,
+      this,
+    );
   }
 
   private onDecorationPick(decorationButtonName: DecorationButtonNames): void {
@@ -105,10 +130,10 @@ export default class SceneDecorationController implements SceneDecorationControl
     this.targetAreasController.hideTargetAreas();
   }
 
-  private onDecorationSuccessfulPlacing(decorationTargetArea: DecorationTargetAreaI): void {
+  private onDecorationSuccessfulPlacing(): void {
     this.targetAreasController.hideTargetAreas();
     this.targetAreasController.hideHint();
-    decorationTargetArea.disableForever();
+    this.dragController.lastPlacedTargetArea.disableForever();
 
     if (this.currentDecoration) {
       this.currentDecoration?.animatePlacingDecorationOnScene();
@@ -116,7 +141,7 @@ export default class SceneDecorationController implements SceneDecorationControl
     }
 
     if (this.targetAreasController.getNumberOfActiveTargetAreas() === 0) {
-      this.eventsManager.emit(GameGlobalEvents.allDecorationsSuccessfullyPlaced);
+      this.gameProcessObservable.notify(GameProcessEvents.allDecorationsSuccessfullyPlaced, null);
     }
   }
 }

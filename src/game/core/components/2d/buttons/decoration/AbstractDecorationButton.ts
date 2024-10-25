@@ -1,24 +1,27 @@
 import { inject, injectable } from 'inversify';
-import { EventEmitter } from 'pixi.js';
 import { DecorationPickButtonI } from './types/interfaces';
 import PixiContainer from '../../../../../lib/2d/container/PixiContainer';
 import { TYPES } from '../../../../../IoC/Types';
 import { DecorationButtonNames } from './types/enums';
-import { GameGlobalEvents } from '../../../../events/types/enums';
 import AbstractButton from '../AbstractButton';
 import PixiSprite from '../../../../../lib/2d/sprite/PixiSprite';
+import { MultipleValuesObservableI } from '../../../../../lib/observable/types/interfaces';
+import { DecorationButtonsInteractionEvents } from '../../../../observables/types/enums';
 
 @injectable()
 export default abstract class AbstractDecorationButton extends AbstractButton implements DecorationPickButtonI {
-  protected readonly globalEventsManager: EventEmitter;
-
   protected disabledForever: boolean = false;
 
   public abstract readonly decorationName: DecorationButtonNames;
 
-  constructor(@inject(TYPES.GlobalEventsManager) globalEventsManager: EventEmitter) {
+  @inject(TYPES.DecorationButtonsInteractionObservable)
+  protected readonly interactionObservable: MultipleValuesObservableI<
+  DecorationButtonsInteractionEvents,
+  DecorationButtonNames
+  >;
+
+  constructor() {
     super();
-    this.globalEventsManager = globalEventsManager;
     this.makeInteractive();
     this.enableButtonMode();
     this.spritesContainer = new PixiContainer();
@@ -51,7 +54,7 @@ export default abstract class AbstractDecorationButton extends AbstractButton im
   }
 
   protected triggerClickEvent(): void {
-    this.globalEventsManager.emit(GameGlobalEvents.decorationButtonClick, this.decorationName);
+    this.interactionObservable.notify(DecorationButtonsInteractionEvents.decorationButtonClick, this.decorationName);
   }
 
   public disableForever(): void {

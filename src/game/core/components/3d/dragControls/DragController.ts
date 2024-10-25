@@ -1,13 +1,13 @@
 import * as THREE from 'three';
-import { inject, injectable } from 'inversify';
 import { Group, Object3D, Object3DEventMap } from 'three';
-import { EventEmitter } from 'pixi.js';
+import { inject, injectable } from 'inversify';
 import { DecorationTargetAreaI } from '../targetArea/types/interfaces';
 import { DraggableDecoration3dI } from '../decorations/types/interfaces';
 import { TYPES } from '../../../../IoC/Types';
 import Three3dEngine from '../../../../engines/3dEngine/Three3dEngine';
 import { DragControllerI } from './types/interfaces';
-import { GameGlobalEvents } from '../../../events/types/enums';
+import { MultipleValuesObservableI } from '../../../../lib/observable/types/interfaces';
+import { GameProcessEvents } from '../../../observables/types/enums';
 
 @injectable()
 export default class DragController implements DragControllerI {
@@ -35,12 +35,15 @@ export default class DragController implements DragControllerI {
 
   private readonly mouse: THREE.Vector2;
 
-  private readonly eventManager: EventEmitter;
+  private readonly gameProcessObservable: MultipleValuesObservableI<GameProcessEvents, null>;
+
+  public lastPlacedTargetArea: DecorationTargetAreaI;
 
   constructor(
   @inject(TYPES.Engine3d) engine3d: Three3dEngine,
-    @inject(TYPES.GlobalEventsManager) eventsManager: EventEmitter,
+    @inject(TYPES.GameProcessObservable) gameProcessObservable: MultipleValuesObservableI<GameProcessEvents, null>,
   ) {
+    this.gameProcessObservable = gameProcessObservable;
     this.camera = engine3d.getCamera();
     this.domElement = document.getElementById('2d-view-container') as HTMLElement;
     this.plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
@@ -48,7 +51,6 @@ export default class DragController implements DragControllerI {
     this.intersection = new THREE.Vector3();
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
-    this.eventManager = eventsManager;
 
     this.subscribeForDomEvents();
   }
@@ -167,7 +169,8 @@ export default class DragController implements DragControllerI {
     this.unsetDraggable();
     this.unsetHitAreas();
     this.unsetTargetAreas();
-    this.eventManager.emit(GameGlobalEvents.decorationSuccessfullyPlaced, targetArea);
+    this.lastPlacedTargetArea = targetArea;
+    this.gameProcessObservable.notify(GameProcessEvents.decorationSuccessfullyPlaced, null);
   }
 
   private updateMouse(event: MouseEvent): void {
