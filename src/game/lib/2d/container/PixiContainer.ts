@@ -106,4 +106,12 @@ export default class PixiContainer implements ContainerI {
   public set alpha(value: number) {
     this.container.alpha = value;
   }
+
+  public get visible(): boolean {
+    return this.container.visible;
+  }
+
+  public set visible(isVisible: boolean) {
+    this.container.visible = isVisible;
+  }
 }

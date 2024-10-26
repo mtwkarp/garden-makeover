@@ -3,8 +3,7 @@ import * as THREE from 'three';
 export interface DecorationTargetAreaI {
   getDecorationTargetArea(): THREE.Mesh;
   setPosition(position: { x: number; y: number; z: number }): void;
-  displayHint(): void;
-  hideHint(): void;
+  position: { x: number; y: number; z: number };
   hide(): void;
   display(): void;
   disabled: boolean;
@@ -16,6 +15,4 @@ export interface DecorationTargetAreasControllerI {
   displayTargetAreas(): void;
   hideTargetAreas(): void;
   getNumberOfActiveTargetAreas(): number;
-  displayHint(): void;
-  hideHint(): void;
 }

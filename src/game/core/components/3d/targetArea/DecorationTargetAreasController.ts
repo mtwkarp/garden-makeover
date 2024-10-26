@@ -25,7 +25,6 @@ export default class DecorationTargetAreasController implements DecorationTarget
 
   public hideTargetAreas(): void {
     this.targetAreas.forEach((targetArea) => targetArea.hide());
-    this.targetAreas.forEach((targetArea) => targetArea.hideHint());
   }
 
   public getDecorationTargetAreas(): DecorationTargetAreaI[] {
@@ -45,13 +44,5 @@ export default class DecorationTargetAreasController implements DecorationTarget
 
   public getNumberOfActiveTargetAreas(): number {
     return this.targetAreas.filter((targetArea) => !targetArea.disabled).length;
-  }
-
-  public displayHint(): void {
-    this.targetAreas[2].displayHint();
-  }
-
-  public hideHint(): void {
-    this.targetAreas[2].hideHint();
   }
 }

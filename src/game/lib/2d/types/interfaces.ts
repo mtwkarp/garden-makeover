@@ -17,6 +17,7 @@ export interface ContainerI {
   onPointerDown(cb: (...args: any) => any): void;
   offPointerDown(cb: (...args: any) => any): void;
   setTint(tint: number): void;
+  visible: boolean;
   scale: { x: number; y: number };
   position: { x: number; y: number };
   width: number;

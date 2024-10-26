@@ -9,6 +9,8 @@ import { DraggableDecoration3dI, DraggableDecorations3dManagerI } from '../decor
 import { DragControllerI } from '../dragControls/types/interfaces';
 import { MultipleValuesObservableI } from '../../../../lib/observable/types/interfaces';
 import { DecorationButtonsInteractionEvents, GameProcessEvents } from '../../../observables/types/enums';
+import { HintsManagerI } from '../../2d/hint/types/interfaces';
+import { HintIds3d } from '../../2d/hint/types/enums';
 
 @injectable()
 export default class SceneDecorationController implements SceneDecorationControllerI {
@@ -29,6 +31,8 @@ export default class SceneDecorationController implements SceneDecorationControl
 
   private readonly gameProcessObservable: MultipleValuesObservableI<GameProcessEvents, null>;
 
+  private readonly hintsManager: HintsManagerI;
+
   constructor(
   @inject(TYPES.MainScene3d) scene: MainScene3dI,
     @inject(TYPES.DecorationTargetAreasController) targetAreasController: DecorationTargetAreasControllerI,
@@ -40,6 +44,7 @@ export default class SceneDecorationController implements SceneDecorationControl
     DecorationButtonNames
     >,
     @inject(TYPES.GameProcessObservable) gameProcessObservable: MultipleValuesObservableI<GameProcessEvents, null>,
+    @inject(TYPES.HintsManager) hintsManager: HintsManagerI,
   ) {
     this.decorationButtonsInteractionObservable = decorationButtonsInteractionObservable;
     this.scene = scene;
@@ -47,6 +52,7 @@ export default class SceneDecorationController implements SceneDecorationControl
     this.targetAreasController = targetAreasController;
     this.draggableDecorationsManager = draggableDecorations3dManager;
     this.dragController = dragController;
+    this.hintsManager = hintsManager;
   }
 
   public enableSceneDecoration(): void {
@@ -107,9 +113,14 @@ export default class SceneDecorationController implements SceneDecorationControl
   }
 
   private displayHint(): void {
-    if (this.targetAreasController.getNumberOfActiveTargetAreas() === 3) {
-      this.targetAreasController.displayHint();
-    }
+    const hintedTargetAreaPosition = this.targetAreasController.getDecorationTargetAreas()[1].position;
+    const hintPosition = {
+      x: hintedTargetAreaPosition.x,
+      y: hintedTargetAreaPosition.y + 0.5,
+      z: hintedTargetAreaPosition.z,
+    };
+    this.hintsManager.add3DHint(HintIds3d.decorationTargetAreaHintArrow, this.scene, hintPosition);
+    this.hintsManager.displayHint(HintIds3d.decorationTargetAreaHintArrow);
   }
 
   private onDecorationCancel(): void {
@@ -117,7 +128,7 @@ export default class SceneDecorationController implements SceneDecorationControl
       this.scene.removeFromScene(this.currentDecoration.getDecoration());
       this.scene.removeFromScene(this.currentDecoration.getDecorationHitArea());
       this.targetAreasController.hideTargetAreas();
-      this.targetAreasController.hideHint();
+      this.hintsManager.hideHintAsNotCompleted(HintIds3d.decorationTargetAreaHintArrow);
       this.currentDecoration = null;
     }
   }
@@ -132,7 +143,7 @@ export default class SceneDecorationController implements SceneDecorationControl
 
   private onDecorationSuccessfulPlacing(): void {
     this.targetAreasController.hideTargetAreas();
-    this.targetAreasController.hideHint();
+    this.hintsManager.hideHintAsCompleted(HintIds3d.decorationTargetAreaHintArrow);
     this.dragController.lastPlacedTargetArea.disableForever();
 
     if (this.currentDecoration) {

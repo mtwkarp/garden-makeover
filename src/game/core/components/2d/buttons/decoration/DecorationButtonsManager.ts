@@ -8,6 +8,8 @@ import { DecorationButtonsManagerI, DecorationPickButtonI } from './types/interf
 import { UIThemeModeServiceI } from '../../../../lightModes/types/interfaces';
 import { MultipleValuesObservableI } from '../../../../../lib/observable/types/interfaces';
 import { DecorationButtonsInteractionEvents, GameProcessEvents } from '../../../../observables/types/enums';
+import { HintsManagerI } from '../../hint/types/interfaces';
+import { HintIds2d } from '../../hint/types/enums';
 
 @injectable()
 export class DecorationButtonsManager implements DecorationButtonsManagerI {
@@ -19,8 +21,6 @@ export class DecorationButtonsManager implements DecorationButtonsManagerI {
 
   private lastClickedButtonName: DecorationButtonNames | null;
 
-  private hintArrow: ContainerI | null;
-
   private readonly themeModeService: UIThemeModeServiceI;
 
   private readonly gameProcessObservable: MultipleValuesObservableI<GameProcessEvents, null>;
@@ -30,9 +30,11 @@ export class DecorationButtonsManager implements DecorationButtonsManagerI {
   DecorationButtonNames
   >;
 
+  private readonly hintsManager: HintsManagerI;
+
   constructor(
   @inject(TYPES.DecorationsPick2dButtonsCollection) decorationPickButtons: DecorationButtonsCollection,
-    @inject(TYPES.HintArrow2d) hintArrow: ContainerI,
+    @inject(TYPES.HintsManager) hintsManager: HintsManagerI,
     @inject(TYPES.UIThemeModeService) themeModeService: UIThemeModeServiceI,
     @inject(TYPES.GameProcessObservable) gameProcessObservable: MultipleValuesObservableI<GameProcessEvents, null>,
     @inject(TYPES.DecorationButtonsInteractionObservable)
@@ -46,17 +48,17 @@ export class DecorationButtonsManager implements DecorationButtonsManagerI {
     this.themeModeService = themeModeService;
     this.buttons = decorationPickButtons;
     this.buttonsArr = Object.keys(this.buttons).map((key) => this.buttons[key as DecorationButtonNames]);
-    this.hintArrow = hintArrow;
+    this.hintsManager = hintsManager;
 
     this.initialize();
   }
 
   private initialize(): void {
-    this.createChildren();
     this.setPositionsForButtons();
+    this.createChildren();
     this.registerButtonsOnThemeModeChange();
     this.subscribe();
-    this.displayHint();
+    this.hintsManager.displayHint(HintIds2d.decorationPickHintArrow);
   }
 
   private registerButtonsOnThemeModeChange(): void {
@@ -89,7 +91,7 @@ export class DecorationButtonsManager implements DecorationButtonsManagerI {
   }
 
   private onDecorationPickButtonClick(name: DecorationButtonNames): void {
-    this.removeHint();
+    this.hintsManager.hideHintAsCompleted(HintIds2d.decorationPickHintArrow);
     this.buttons[DecorationButtonNames.discard].show();
     this.disableDecorationButtons();
     this.lastClickedButtonName = name;
@@ -136,27 +138,18 @@ export class DecorationButtonsManager implements DecorationButtonsManagerI {
   private createChildren(): void {
     this.container = new PixiContainer();
 
+    const hintPosition = {
+      x: this.buttons[DecorationButtonNames.bush].position.x - 90,
+      y: this.buttons[DecorationButtonNames.bush].position.y,
+    };
+    this.hintsManager.add2DHint(HintIds2d.decorationPickHintArrow, this.container, hintPosition);
+
     this.container.addChild(
       this.buttons[DecorationButtonNames.discard].view,
       this.buttons[DecorationButtonNames.flower].view,
       this.buttons[DecorationButtonNames.bush].view,
       this.buttons[DecorationButtonNames.tree].view,
     );
-  }
-
-  private removeHint(): void {
-    if (this.hintArrow !== null) {
-      this.hintArrow.destroy();
-      this.hintArrow = null;
-    }
-  }
-
-  private displayHint(): void {
-    if (this.hintArrow !== null) {
-      const bushButtonPosition = this.buttons[DecorationButtonNames.bush].position;
-      this.hintArrow.setPosition(bushButtonPosition.x - 90, bushButtonPosition.y);
-      this.container.addChild(this.hintArrow.view);
-    }
   }
 
   public getButtonsView(): ContainerI {

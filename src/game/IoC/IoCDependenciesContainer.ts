@@ -13,10 +13,10 @@ import { decorations3dModule } from './modules/3d/decorations3dModule';
 import { buttons2dModule } from './modules/2d/buttons2dModule';
 import { targetAreasModule } from './modules/3d/targetAreasModule';
 import { dragControlsModule } from './modules/3d/dragControlsModule';
-import { hint2dModule } from './modules/2d/hint2dModule';
 import { themesModule } from './modules/themes/themesModule';
 import { lightsModule } from './modules/3d/lightsModule';
 import { observablesModule } from './modules/observables/observablesModule';
+import { hintsModule } from './modules/hints/hintsModule';
 
 export default class IoCDependenciesContainer extends Container implements IoCDependenciesContainerI {
   private modules: ContainerModule[] = [
@@ -33,10 +33,10 @@ export default class IoCDependenciesContainer extends Container implements IoCDe
     buttons2dModule,
     targetAreasModule,
     dragControlsModule,
-    hint2dModule,
     themesModule,
     lightsModule,
     observablesModule,
+    hintsModule,
   ];
 
   public loadDependencies(): void {
