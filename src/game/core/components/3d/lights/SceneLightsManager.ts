@@ -16,6 +16,7 @@ export default class SceneLightsManager implements SceneLightsManagerI {
   }
 
   public getSceneLights(): any[] {
-    return this.lights.map((light) => light.view);
+    // return this.lights.map((light) => light.view);
+    return [];
   }
 }
