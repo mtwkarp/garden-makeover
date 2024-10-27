@@ -1,0 +1,12 @@
+# Project Glossary
+
+This glossary defines key terms, abbreviations,
+and naming conventions used throughout the project.
+It serves as a reference for developers to maintain consistency in naming and terminology.
+
+## Naming Conventions
+
+- All names ending with the letter "I" indicate an **interface**.
+For example, `ContainerI` refers to the interface for a container.
+
+

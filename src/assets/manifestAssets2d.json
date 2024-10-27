@@ -1,0 +1,48 @@
+{
+  "assets": [
+    {
+      "alias": "gameScreen/buttons/simple-button.png",
+      "src": "assets/2d/gameScreen/buttons/simple-button.png"
+    },
+    {
+      "alias": "gameScreen/icons/bush.png",
+      "src": "assets/2d/gameScreen/icons/bush.png"
+    },
+    {
+      "alias": "gameScreen/icons/discard.png",
+      "src": "assets/2d/gameScreen/icons/discard.png"
+    },
+    {
+      "alias": "gameScreen/icons/flower.png",
+      "src": "assets/2d/gameScreen/icons/flower.png"
+    },
+    {
+      "alias": "gameScreen/icons/light_bulb.png",
+      "src": "assets/2d/gameScreen/icons/light_bulb.png"
+    },
+    {
+      "alias": "gameScreen/icons/tree.png",
+      "src": "assets/2d/gameScreen/icons/tree.png"
+    },
+    {
+      "alias": "hint/green-arrow.png",
+      "src": "assets/2d/hint/green-arrow.png"
+    },
+    {
+      "alias": "outroScreen/download-button.png",
+      "src": "assets/2d/outroScreen/download-button.png"
+    },
+    {
+      "alias": "outroScreen/game-icon.png",
+      "src": "assets/2d/outroScreen/game-icon.png"
+    },
+    {
+      "alias": "splashScreen/background.jpg",
+      "src": "assets/2d/splashScreen/background.jpg"
+    },
+    {
+      "alias": "splashScreen/rotate.png",
+      "src": "assets/2d/splashScreen/rotate.png"
+    }
+  ]
+}
