@@ -144,7 +144,6 @@ export default class SceneDecorationController implements SceneDecorationControl
   private onDecorationSuccessfulPlacing(): void {
     this.targetAreasController.hideTargetAreas();
     this.hintsManager.hideHintAsCompleted(HintIds3d.decorationTargetAreaHintArrow);
-    this.dragController.lastPlacedTargetArea.disableForever();
 
     if (this.currentDecoration) {
       this.currentDecoration?.animatePlacingDecorationOnScene();

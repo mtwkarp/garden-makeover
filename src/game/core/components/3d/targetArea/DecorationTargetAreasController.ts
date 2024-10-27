@@ -18,9 +18,7 @@ export default class DecorationTargetAreasController implements DecorationTarget
   }
 
   public displayTargetAreas(): void {
-    this.targetAreas.forEach((targetArea) => {
-      targetArea.display();
-    });
+    this.targetAreas.forEach((targetArea) => targetArea.display());
   }
 
   public hideTargetAreas(): void {
@@ -28,16 +26,9 @@ export default class DecorationTargetAreasController implements DecorationTarget
   }
 
   public getDecorationTargetAreas(): DecorationTargetAreaI[] {
-    for (let i = 0; i < this.targetAreasPositions.length; i++) {
-      const targetArea = this.targetAreas[i];
-      const targetAreaPosition = this.targetAreasPositions[i];
-
-      if (!targetArea) {
-        throw new Error('Number of positions and target areas are not even.');
-      }
-
-      targetArea.setPosition(targetAreaPosition);
-    }
+    this.targetAreas.forEach((targetArea, index) => {
+      targetArea.setPosition(this.targetAreasPositions[index]);
+    });
 
     return this.targetAreas;
   }

@@ -2,10 +2,9 @@ import { injectable } from 'inversify';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import AbstractHint from '../AbstractHint';
-import { HintIds } from '../types/types';
 import { HintIds3d } from '../types/enums';
 import ModelsCache from '../../../../../assetsLoaders/ModelsCache';
-import { Hint3dI } from '../types/interfaces';
+import { Hint3dI, HintIds } from '../types/interfaces';
 
 @injectable()
 export default class HintArrow3d extends AbstractHint implements Hint3dI {

@@ -4,9 +4,8 @@ import { ContainerI, SpriteI } from '../../../../../lib/2d/types/interfaces';
 import PixiContainer from '../../../../../lib/2d/container/PixiContainer';
 import PixiSprite from '../../../../../lib/2d/sprite/PixiSprite';
 import AbstractHint from '../AbstractHint';
-import { HintIds } from '../types/types';
 import { HintIds2d } from '../types/enums';
-import { Hint2dI } from '../types/interfaces';
+import { Hint2dI, HintIds } from '../types/interfaces';
 
 @injectable()
 export default class HintArrow2d extends AbstractHint implements Hint2dI {

@@ -1,7 +1,6 @@
 import { injectable } from 'inversify';
-import { HintI } from './types/interfaces';
+import { HintI, HintIds } from './types/interfaces';
 import { HintState } from './types/enums';
-import { HintIds } from './types/types';
 
 @injectable()
 export default abstract class AbstractHint implements HintI {

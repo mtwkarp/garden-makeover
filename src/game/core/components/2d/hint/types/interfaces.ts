@@ -1,7 +1,13 @@
 import { HintIds2d, HintIds3d } from './enums';
 import { ContainerI } from '../../../../../lib/2d/types/interfaces';
 import { MainScene3dI } from '../../../../scenes/3d/mainScene3d/types/interfaces';
-import { HintIds } from './types';
+
+export type HintIds = HintIds2d | HintIds3d;
+
+export type HintsCollection = {
+  hints2d: Hint2dI[];
+  hints3d: Hint3dI[];
+};
 
 export interface HintI {
   display(): void;

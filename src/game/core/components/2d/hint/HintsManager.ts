@@ -1,8 +1,9 @@
 import { inject, injectable } from 'inversify';
 import { ContainerI } from '../../../../lib/2d/types/interfaces';
 import { MainScene3dI } from '../../../scenes/3d/mainScene3d/types/interfaces';
-import { Hint2dI, Hint3dI, HintsManagerI } from './types/interfaces';
-import { HintIds, HintsCollection } from './types/types';
+import {
+  Hint2dI, Hint3dI, HintIds, HintsCollection, HintsManagerI,
+} from './types/interfaces';
 import { HintIds2d, HintIds3d } from './types/enums';
 import { TYPES } from '../../../../IoC/Types';
 

@@ -5,5 +5,11 @@ export interface DragControllerI {
   setDraggable(draggable: DraggableDecoration3dI): void;
   unsetDraggable(): void;
   setTargetAreas(targetAreas: DecorationTargetAreaI[]): void;
-  lastPlacedTargetArea: DecorationTargetAreaI;
+  changeState(newState: DragStateI): void;
+}
+
+export interface DragStateI {
+  setDraggable(draggable: DraggableDecoration3dI): void;
+  unsetDraggable(): void;
+  setTargetAreas(targetAreas: DecorationTargetAreaI[]): void;
 }
